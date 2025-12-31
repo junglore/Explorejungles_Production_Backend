@@ -1,0 +1,697 @@
+<div class="page-header">
+    <h1 class="page-title">Featured Images Management</h1>
+    <p class="page-subtitle">Select 6 images to display in the featured section</p>
+</div>
+
+<div class="featured-container">
+    <div class="featured-info">
+        <div class="info-card">
+            <i class="fas fa-star"></i>
+            <h3>Featured Images</h3>
+            <p>Select up to 6 images to showcase on your platform's featured section. These images will be prominently
+                displayed to visitors.</p>
+            <div class="selection-status">
+                <span id="selectedCount">0</span> of 6 images selected
+            </div>
+        </div>
+    </div>
+
+    <div class="featured-preview">
+        <h3>Featured Section Preview</h3>
+        <div class="featured-grid" id="featuredGrid">
+            <!-- Featured images will be displayed here -->
+            <div class="empty-slots">
+                <div class="empty-slot" data-slot="1">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Image</span>
+                </div>
+                <div class="empty-slot" data-slot="2">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Image</span>
+                </div>
+                <div class="empty-slot" data-slot="3">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Image</span>
+                </div>
+                <div class="empty-slot" data-slot="4">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Image</span>
+                </div>
+                <div class="empty-slot" data-slot="5">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Image</span>
+                </div>
+                <div class="empty-slot" data-slot="6">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Image</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="featured-actions">
+            <button class="btn btn-primary" onclick="saveFeaturedImages()" id="saveBtn" disabled>
+                <i class="fas fa-save"></i> Save Featured Images
+            </button>
+            <button class="btn btn-secondary" onclick="clearFeaturedSelection()">
+                <i class="fas fa-times"></i> Clear Selection
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="media-library-section">
+    <h3>Available Images</h3>
+    <div class="library-controls">
+        <div class="search-section">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search images..."
+                style="max-width: 300px;">
+            <button onclick="searchImages()" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+
+        <div class="filter-section">
+            <select id="sortFilter" class="form-control" onchange="filterImages()">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="name">Name A-Z</option>
+                <option value="size">Size (Largest)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="media-grid" id="mediaGrid">
+        <!-- Available images will be populated here -->
+    </div>
+</div>
+
+<script>
+    let selectedFeaturedImages = [];
+    let allImages = [];
+    let currentPage = 1;
+    let itemsPerPage = 20;
+
+    // Initialize featured images manager
+    document.addEventListener('DOMContentLoaded', function () {
+        loadImages();
+        loadCurrentFeaturedImages();
+    });
+
+    async function loadImages() {
+        try {
+            const response = await fetch('/api/v1/media/?media_type=IMAGE');
+            if (response.ok) {
+                const data = await response.json();
+                allImages = data || [];
+                displayImageGrid();
+            } else {
+                showMessage('Failed to load images', 'error');
+            }
+        } catch (error) {
+            console.error('Error loading images:', error);
+            showMessage('Error loading images', 'error');
+        }
+    }
+
+    async function loadCurrentFeaturedImages() {
+        try {
+            const response = await fetch('/api/v1/media/featured');
+            if (response.ok) {
+                const data = await response.json();
+                selectedFeaturedImages = data.items || [];
+                updateFeaturedGrid();
+                updateSelectionStatus();
+            }
+        } catch (error) {
+            console.error('Error loading featured images:', error);
+        }
+    }
+
+    function displayImageGrid() {
+        const grid = document.getElementById('mediaGrid');
+
+        if (allImages.length === 0) {
+            grid.innerHTML = `
+            <div class="no-images">
+                <i class="fas fa-inbox" style="font-size: 3rem; color: #cbd5e0; margin-bottom: 1rem;"></i>
+                <h3>No images available</h3>
+                <p>Upload some images to select for featured section</p>
+            </div>
+        `;
+            return;
+        }
+
+        grid.innerHTML = allImages.map(image => `
+        <div class="image-item ${selectedFeaturedImages.some(fi => fi.id === image.id) ? 'featured' : ''}" 
+             data-id="${image.id}" onclick="toggleFeaturedImage('${image.id}')">
+            <div class="image-preview">
+                <img src="${image.file_url}" alt="${image.title || image.original_filename}" onerror="this.src='/admin/templates/placeholder-image.png'">
+                <div class="featured-indicator">
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="image-info">
+                <h4 class="image-title">${image.title || image.original_filename}</h4>
+                <p class="image-date">${new Date(image.created_at).toLocaleDateString()}</p>
+            </div>
+        </div>
+    `).join('');
+    }
+
+    function toggleFeaturedImage(imageId) {
+        const image = allImages.find(img => img.id === imageId);
+        if (!image) return;
+
+        const index = selectedFeaturedImages.findIndex(fi => fi.id === imageId);
+
+        if (index > -1) {
+            // Remove from featured
+            selectedFeaturedImages.splice(index, 1);
+        } else {
+            // Add to featured (if under limit)
+            if (selectedFeaturedImages.length < 6) {
+                selectedFeaturedImages.push(image);
+            } else {
+                showMessage('Maximum 6 images can be featured', 'error');
+                return;
+            }
+        }
+
+        updateFeaturedGrid();
+        updateSelectionStatus();
+        updateImageGrid();
+    }
+
+    function updateFeaturedGrid() {
+        const grid = document.getElementById('featuredGrid');
+        const emptySlots = document.querySelector('.empty-slots');
+
+        // Clear existing featured images
+        const existingFeatured = grid.querySelectorAll('.featured-item');
+        existingFeatured.forEach(item => item.remove());
+
+        // Add selected featured images
+        selectedFeaturedImages.forEach((image, index) => {
+            const featuredItem = document.createElement('div');
+            featuredItem.className = 'featured-item';
+            featuredItem.dataset.slot = index + 1;
+            featuredItem.innerHTML = `
+            <img src="/uploads/images/${image.filename}" alt="${image.title || 'Featured image'}" onerror="this.src='/admin/templates/placeholder-image.png'">
+            <div class="featured-overlay">
+                <button onclick="removeFeaturedImage('${image.id}')" class="btn-remove">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="featured-info">
+                    <span class="featured-title">${image.title || image.filename}</span>
+                </div>
+            </div>
+        `;
+
+            // Insert before the corresponding empty slot
+            const emptySlot = emptySlots.querySelector(`[data-slot="${index + 1}"]`);
+            emptySlot.parentNode.insertBefore(featuredItem, emptySlot);
+        });
+
+        // Hide empty slots that are now filled
+        emptySlots.querySelectorAll('.empty-slot').forEach((slot, index) => {
+            if (index < selectedFeaturedImages.length) {
+                slot.style.display = 'none';
+            } else {
+                slot.style.display = 'flex';
+            }
+        });
+    }
+
+    function removeFeaturedImage(imageId) {
+        const index = selectedFeaturedImages.findIndex(fi => fi.id === imageId);
+        if (index > -1) {
+            selectedFeaturedImages.splice(index, 1);
+            updateFeaturedGrid();
+            updateSelectionStatus();
+            updateImageGrid();
+        }
+    }
+
+    function updateSelectionStatus() {
+        const count = selectedFeaturedImages.length;
+        document.getElementById('selectedCount').textContent = count;
+
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.disabled = count === 0;
+
+        if (count === 6) {
+            showMessage('Maximum 6 images selected for featured section', 'info');
+        }
+    }
+
+    function updateImageGrid() {
+        // Update the visual state of images in the grid
+        document.querySelectorAll('.image-item').forEach(item => {
+            const imageId = item.dataset.id;
+            const isFeatured = selectedFeaturedImages.some(fi => fi.id === imageId);
+            item.classList.toggle('featured', isFeatured);
+        });
+    }
+
+    function searchImages() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const filteredImages = allImages.filter(image =>
+            (image.title && image.title.toLowerCase().includes(searchTerm)) ||
+            image.original_filename.toLowerCase().includes(searchTerm)
+        );
+
+        displayFilteredImages(filteredImages);
+    }
+
+    function filterImages() {
+        const sortFilter = document.getElementById('sortFilter').value;
+        let sortedImages = [...allImages];
+
+        switch (sortFilter) {
+            case 'newest':
+                sortedImages.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                break;
+            case 'oldest':
+                sortedImages.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                break;
+            case 'name':
+                sortedImages.sort((a, b) => (a.title || a.original_filename).localeCompare(b.title || b.original_filename));
+                break;
+            case 'size':
+                sortedImages.sort((a, b) => (b.file_size || 0) - (a.file_size || 0));
+                break;
+        }
+
+        displayFilteredImages(sortedImages);
+    }
+
+    function displayFilteredImages(images) {
+        const grid = document.getElementById('mediaGrid');
+
+        if (images.length === 0) {
+            grid.innerHTML = `
+            <div class="no-images">
+                <i class="fas fa-search" style="font-size: 3rem; color: #cbd5e0; margin-bottom: 1rem;"></i>
+                <h3>No images found</h3>
+                <p>Try adjusting your search or filters</p>
+            </div>
+        `;
+            return;
+        }
+
+        grid.innerHTML = images.map(image => `
+        <div class="image-item ${selectedFeaturedImages.some(fi => fi.id === image.id) ? 'featured' : ''}" 
+             data-id="${image.id}" onclick="toggleFeaturedImage('${image.id}')">
+            <div class="image-preview">
+                <img src="${image.file_url}" alt="${image.title || image.original_filename}" onerror="this.src='/admin/templates/placeholder-image.png'">
+                <div class="featured-indicator">
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="image-info">
+                <h4 class="image-title">${image.title || image.original_filename}</h4>
+                <p class="image-date">${new Date(image.created_at).toLocaleDateString()}</p>
+            </div>
+        </div>
+    `).join('');
+    }
+
+    async function saveFeaturedImages() {
+        if (selectedFeaturedImages.length === 0) {
+            showMessage('Please select at least one image', 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/v1/media/featured', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    featured_images: selectedFeaturedImages.map(img => img.id)
+                })
+            });
+
+            if (response.ok) {
+                showMessage('Featured images saved successfully!', 'success');
+            } else {
+                showMessage('Failed to save featured images', 'error');
+            }
+        } catch (error) {
+            console.error('Error saving featured images:', error);
+            showMessage('Error saving featured images', 'error');
+        }
+    }
+
+    function clearFeaturedSelection() {
+        if (confirm('Are you sure you want to clear all featured image selections?')) {
+            selectedFeaturedImages = [];
+            updateFeaturedGrid();
+            updateSelectionStatus();
+            updateImageGrid();
+            showMessage('Featured selection cleared', 'info');
+        }
+    }
+</script>
+
+<style>
+    .featured-container {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .featured-info {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+        height: fit-content;
+    }
+
+    .info-card {
+        text-align: center;
+    }
+
+    .info-card i {
+        font-size: 3rem;
+        color: #fbbf24;
+        margin-bottom: 1rem;
+    }
+
+    .info-card h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 1rem;
+    }
+
+    .info-card p {
+        color: #718096;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .selection-status {
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 2px solid #e2e8f0;
+    }
+
+    .selection-status span {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #16a34a;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .featured-preview {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .featured-preview h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .featured-item {
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 2px solid #16a34a;
+    }
+
+    .featured-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .featured-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0.75rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .featured-item:hover .featured-overlay {
+        opacity: 1;
+    }
+
+    .btn-remove {
+        align-self: flex-end;
+        background: #e53e3e;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-remove:hover {
+        background: #c53030;
+        transform: scale(1.1);
+    }
+
+    .featured-info {
+        text-align: center;
+    }
+
+    .featured-title {
+        color: white;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .empty-slots {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .empty-slot {
+        aspect-ratio: 1;
+        border: 2px dashed #cbd5e0;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #a0aec0;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .empty-slot:hover {
+        border-color: #16a34a;
+        color: #16a34a;
+        background: #f0fdf4;
+    }
+
+    .empty-slot i {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-slot span {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .featured-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .media-library-section {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .media-library-section h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .library-controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .search-section {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+    }
+
+    .filter-section select {
+        min-width: 150px;
+    }
+
+    .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .image-item {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .image-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .image-item.featured {
+        border-color: #fbbf24;
+        box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+    }
+
+    .image-preview {
+        position: relative;
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .featured-indicator {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 24px;
+        height: 24px;
+        background: #fbbf24;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .image-item.featured .featured-indicator {
+        opacity: 1;
+    }
+
+    .image-info {
+        padding: 1rem;
+    }
+
+    .image-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .image-date {
+        color: #a0aec0;
+        font-size: 0.75rem;
+    }
+
+    .no-images {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem;
+        color: #a0aec0;
+    }
+
+    @media (max-width: 1024px) {
+        .featured-container {
+            grid-template-columns: 1fr;
+        }
+
+        .featured-info {
+            order: 2;
+        }
+
+        .featured-preview {
+            order: 1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .featured-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .empty-slots {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .library-controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .media-grid {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+    }
+</style>

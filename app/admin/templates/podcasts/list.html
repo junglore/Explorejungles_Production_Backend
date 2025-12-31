@@ -1,0 +1,414 @@
+<!-- Podcast List Template -->
+<div class="page-header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1 class="page-title">Podcast Management</h1>
+            <p class="page-subtitle">Manage your podcast collection and episodes</p>
+        </div>
+        <a href="/admin/podcasts/create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create New Podcast
+        </a>
+    </div>
+</div>
+
+<div id="message-container"></div>
+
+<div class="content-container">
+    <!-- Filters -->
+    <div class="filters-section">
+        <form method="get" class="filters-form">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="search">Search</label>
+                    <input type="text" id="search" name="search" value="{{search_value}}"
+                        placeholder="Search title, description, host, or show..." class="form-control">
+                </div>
+                <div class="filter-group">
+                    <label for="category_id">Category</label>
+                    <select id="category_id" name="category_id" class="form-control">
+                        {{category_options}}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="limit">Per Page</label>
+                    <select id="limit" name="limit" class="form-control">
+                        <option value="10" {{limit_10_selected}}>10</option>
+                        <option value="25" {{limit_25_selected}}>25</option>
+                        <option value="50" {{limit_50_selected}}>50</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Filter
+                </button>
+                <a href="/admin/podcasts/list" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Table -->
+    <div class="table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Podcast Info</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{table_rows}}
+            </tbody>
+        </table>
+    </div>
+
+    {{pagination_html}}
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Confirm Delete</h3>
+        <p>Are you sure you want to delete "<span id="deleteItemTitle"></span>"?</p>
+        <p class="text-danger">This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button onclick="closeDeleteModal()" class="btn btn-secondary">Cancel</button>
+            <button onclick="executeDelete()" class="btn btn-danger">Delete</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .content-container {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .filters-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: #f8fafc;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .filters-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .filter-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 100px;
+        gap: 1rem;
+        align-items: end;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-group label {
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+    .admin-table th {
+        background: #f8fafc;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #4a5568;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .admin-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: top;
+    }
+
+    .admin-table tr:hover {
+        background: #f8fafc;
+    }
+
+    .content-title {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 0.25rem;
+    }
+
+    .content-meta {
+        color: #718096;
+        font-size: 0.875rem;
+    }
+
+    .podcast-info p {
+        margin: 0.25rem 0;
+        font-size: 0.9rem;
+        color: #4a5568;
+    }
+
+    .content-preview {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        color: #4a5568;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+    }
+
+    .btn-secondary {
+        background: #f7fafc;
+        color: #4a5568;
+        border: 2px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+        background: #edf2f7;
+        border-color: #cbd5e0;
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+        color: white;
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+        color: white;
+    }
+
+    .btn-info:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(56, 178, 172, 0.3);
+    }
+
+    .pagination-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .pagination {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .pagination-info {
+        color: #718096;
+        font-size: 0.9rem;
+    }
+
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 1.5rem;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-muted {
+        color: #718096;
+    }
+
+    .text-danger {
+        color: #e53e3e;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        background: white;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .filter-row {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .pagination-container {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .content-container {
+            padding: 1rem;
+        }
+    }
+</style>
+
+<script>
+    let deleteItemId = null;
+
+    function confirmDelete(id, title) {
+        deleteItemId = id;
+        document.getElementById('deleteItemTitle').textContent = title;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function closeDeleteModal() {
+        deleteItemId = null;
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+
+    async function executeDelete() {
+        if (!deleteItemId) return;
+
+        try {
+            const response = await fetch(`/admin/podcasts/delete/${deleteItemId}`, {
+                method: 'DELETE',
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                showMessage('Podcast deleted successfully!', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                const errorText = await response.text();
+                showMessage('Error deleting podcast: ' + response.status, 'error');
+            }
+        } catch (error) {
+            showMessage('Network error: ' + error.message, 'error');
+        } finally {
+            closeDeleteModal();
+        }
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('deleteModal').addEventListener('click', function (e) {
+        if (e.target === this) {
+            closeDeleteModal();
+        }
+    });
+
+    function showMessage(message, type) {
+        const container = document.getElementById('message-container');
+        container.innerHTML = `
+            <div class="message ${type}" style="
+                padding: 1rem 1.5rem;
+                margin-bottom: 1rem;
+                border-radius: 8px;
+                font-weight: 500;
+                ${type === 'success' ? 'background: #c6f6d5; color: #22543d; border: 1px solid #9ae6b4;' : ''}
+                ${type === 'error' ? 'background: #fed7d7; color: #742a2a; border: 1px solid #feb2b2;' : ''}
+            ">
+                ${message}
+            </div>
+        `;
+
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 5000);
+    }
+</script>

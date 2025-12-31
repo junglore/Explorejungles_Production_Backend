@@ -1,0 +1,3 @@
+"""
+Admin Routes Module
+"""

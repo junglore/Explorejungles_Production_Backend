@@ -1,0 +1,51 @@
+<div class="page-header">
+    <h1 class="page-title">Edit Media</h1>
+    <p class="page-subtitle">Update media information and metadata</p>
+</div>
+
+<div class="form-container">
+    <form method="post" id="editMediaForm">
+        <div class="form-section">
+            <h3 class="section-title">Media Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" class="form-control" value="{{ media.title or '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="photographer">Photographer</label>
+                    <input type="text" id="photographer" name="photographer" class="form-control" value="{{ media.photographer or '' }}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="national_park">National Park</label>
+                    <input type="text" id="national_park" name="national_park" class="form-control" value="{{ media.national_park or '' }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" rows="4">{{ media.description or '' }}</textarea>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Update Media
+            </button>
+            <a href="/admin/media/library" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Library
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('editMediaForm').addEventListener('submit', function(e) {
+    const submitBtn = document.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+    }
+});
+</script>

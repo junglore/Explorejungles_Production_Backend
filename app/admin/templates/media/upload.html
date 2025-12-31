@@ -1,0 +1,210 @@
+<div class="page-header">
+    <h1 class="page-title">Upload Media</h1>
+    <p class="page-subtitle">Add new images, videos, and other media files</p>
+</div>
+
+<!-- Message container for notifications -->
+<div id="message-container"></div>
+
+<div class="form-container">
+    <form method="post" action="/admin/media/upload" enctype="multipart/form-data" id="uploadForm">
+        <div class="form-section">
+            <h3 class="section-title">File Selection</h3>
+            <div class="form-group">
+                <label for="file">Media File</label>
+                <div class="file-upload-area" onclick="document.getElementById('file').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Click to select file or drag and drop</p>
+                    <small>Supports: JPEG, PNG, GIF, WebP, MP4, AVI, MOV, WMV, WebM, MKV, FLV</small>
+                    <small>Max size: 50MB for images, 200MB for videos</small>
+                </div>
+                <input type="file" id="file" name="file" class="file-input" accept="image/*,video/*" required>
+                <div id="file-preview"></div>
+                <div id="file-error" class="field-error" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3 class="section-title">Media Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="title">Title (Optional)</label>
+                    <input type="text" id="title" name="title" class="form-control" placeholder="Enter media title">
+                </div>
+                <div class="form-group">
+                    <label for="photographer">Photographer (Optional)</label>
+                    <input type="text" id="photographer" name="photographer" class="form-control"
+                        placeholder="Enter photographer name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="national_park">National Park (Optional)</label>
+                    <input type="text" id="national_park" name="national_park" class="form-control"
+                        placeholder="Enter national park name">
+                </div>
+                <div class="form-group">
+                    <label for="content_id">Link to Content (Optional)</label>
+                    <input type="text" id="content_id" name="content_id" class="form-control"
+                        placeholder="Enter content ID to link">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description (Optional)</label>
+                <textarea id="description" name="description" class="form-control" rows="4"
+                    placeholder="Enter media description"></textarea>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3 class="section-title">Upload Options</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="featured" value="true">
+                        Mark as featured media
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="public" value="true" checked>
+                        Make publicly accessible
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-upload"></i> Upload Media
+            </button>
+            <a href="/admin/media/" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // File upload preview and validation
+    document.getElementById('file').addEventListener('change', function (event) {
+        handleFileUpload(event, 'file-preview', 'auto');
+    });
+
+    // Form submission
+    document.getElementById('uploadForm').addEventListener('submit', function (e) {
+        const fileInput = document.getElementById('file');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            e.preventDefault();
+            alert('Please select a file to upload');
+            return;
+        }
+
+        // Validate file size
+        const maxSize = file.type.startsWith('image/') ? 50 * 1024 * 1024 : 200 * 1024 * 1024;
+        if (file.size > maxSize) {
+            e.preventDefault();
+            alert(`File size must be less than ${maxSize / (1024 * 1024)}MB`);
+            return;
+        }
+
+        // Show loading state
+        const submitBtn = document.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+        }
+    });
+
+    function handleFileUpload(event, previewId, type) {
+        const file = event.target.files[0];
+        const preview = document.getElementById(previewId);
+        const errorDiv = document.getElementById('file-error');
+
+        if (!file || !preview) return;
+
+        // Clear previous preview and errors
+        preview.innerHTML = '';
+        errorDiv.style.display = 'none';
+
+        // Auto-detect type if not specified
+        if (type === 'auto') {
+            type = file.type.startsWith('image/') ? 'image' : 'video';
+        }
+
+        if (type === 'image') {
+            const allowedTypes = [
+                'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/avif'
+            ];
+
+            if (!allowedTypes.includes(file.type)) {
+                errorDiv.textContent = 'Please select a valid image file (JPEG, PNG, GIF, or WebP)';
+                errorDiv.style.display = 'block';
+                event.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `
+                <div style="margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; background: #f7fafc;">
+                    <img src="${e.target.result}" style="max-width: 200px; max-height: 200px; border-radius: 8px; display: block; margin: 0 auto;">
+                    <p style="text-align: center; margin-top: 0.5rem; font-size: 0.875rem; color: #718096;">${file.name}</p>
+                    <p style="text-align: center; font-size: 0.75rem; color: #a0aec0;">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                </div>
+            `;
+            };
+            reader.readAsDataURL(file);
+
+        } else if (type === 'video') {
+            const allowedVideoTypes = [
+                'video/mp4', 'video/avi', 'video/mov', 'video/wmv', 'video/webm', 'video/mkv', 'video/flv'
+            ];
+
+            if (!allowedVideoTypes.includes(file.type)) {
+                errorDiv.textContent = 'Please select a valid video file (MP4, AVI, MOV, WMV, WebM, MKV, or FLV)';
+                errorDiv.style.display = 'block';
+                event.target.value = '';
+                return;
+            }
+
+            preview.innerHTML = `
+            <div style="margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; background: #f7fafc;">
+                <div style="text-align: center;">
+                    <i class="fas fa-video" style="font-size: 2rem; color: #16a34a; margin-bottom: 0.5rem;"></i>
+                    <p style="font-weight: 600; color: #4a5568;">${file.name}</p>
+                    <p style="font-size: 0.875rem; color: #718096;">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                </div>
+            </div>
+        `;
+        }
+    }
+</script>
+
+<style>
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #e2e8f0;
+    }
+
+    .form-actions .btn {
+        min-width: 120px;
+    }
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #16a34a;
+    }
+</style>

@@ -1,0 +1,187 @@
+<div class="page-header">
+    <h1 class="page-title">Media Management Dashboard</h1>
+    <p class="page-subtitle">Manage your media library and uploads</p>
+</div>
+
+<div class="dashboard-section">
+    <div class="section-header">
+        <h3><i class="fas fa-chart-bar"></i> Quick Stats</h3>
+        <p>Media collection overview</p>
+    </div>
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-image"></i></div>
+                <div class="stat-content">
+                    <h4 id="totalMedia">-</h4>
+                    <p>Total Media Files</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <div class="stat-content">
+                    <h4 id="featuredCount">-</h4>
+                    <p>Featured Images</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-hdd"></i></div>
+                <div class="stat-content">
+                    <h4 id="totalSize">-</h4>
+                    <p>Total Storage Used</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-content">
+                    <h4 id="lastUpload">-</h4>
+                    <p>Last Upload</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-section">
+    <div class="section-header">
+        <h3><i class="fas fa-upload"></i> Quick Actions</h3>
+        <p>Common media management tasks</p>
+    </div>
+    <div class="action-buttons">
+        <a href="/admin/media/upload" class="btn btn-primary">
+            <i class="fas fa-upload"></i> Upload New Media
+        </a>
+        <a href="/admin/media/library" class="btn btn-secondary">
+            <i class="fas fa-th-large"></i> Browse Library
+        </a>
+        <a href="/admin/media/collage" class="btn btn-success">
+            <i class="fas fa-th"></i> Create Collage
+        </a>
+    </div>
+</div>
+
+<div class="dashboard-section">
+    <div class="section-header">
+        <h3><i class="fas fa-history"></i> Recent Uploads</h3>
+        <p>Latest media additions</p>
+    </div>
+    <div class="recent-uploads">
+        <div class="upload-grid" id="recentUploads">
+            <!-- Recent uploads will be populated here -->
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-section {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .section-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .section-header h3 {
+        color: #2d3748;
+        font-size: 1.375rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+        color: #718096;
+        font-size: 0.95rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        color: #16a34a;
+        margin-bottom: 1rem;
+    }
+
+    .stat-content h4 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-content p {
+        color: #718096;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .upload-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .btn {
+        padding: 0.875rem 1.5rem;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
+        color: white;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+</style>

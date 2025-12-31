@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Categories Management - Junglore Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            color: #0f172a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-link {
+            color: #64748b;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+        
+        .nav-link.active {
+            background: #447a65;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            color: #0f172a;
+            font-weight: 700;
+        }
+        
+        .actions-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+        
+        .search-input {
+            flex: 1;
+            max-width: 400px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #447a65;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #356152;
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .status-inactive {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+        
+        .close-btn:hover {
+            background: #f1f5f9;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-family: inherit;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #447a65;
+            box-shadow: 0 0 0 3px rgba(68, 122, 101, 0.1);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-checkbox input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 2000;
+        }
+        
+        .toast.show {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .toast.success {
+            border-left: 4px solid #10b981;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Junglore Admin</h1>
+        <div class="nav-links">
+            <a href="/admin" class="nav-link">Dashboard</a>
+            <a href="/admin/discussions" class="nav-link">Discussions</a>
+            <a href="/admin/categories" class="nav-link active">Categories</a>
+            <a href="/admin/national-parks" class="nav-link">National Parks</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2 class="page-title">Categories Management</h2>
+        </div>
+
+        <div class="actions-bar">
+            <input 
+                type="text" 
+                class="search-input" 
+                id="searchInput" 
+                placeholder="Search categories..."
+            >
+            <button class="btn btn-primary" onclick="showCreateModal()">
+                + Add Category
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="table-container">
+                <div id="loadingState" class="loading">
+                    Loading categories...
+                </div>
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-state-icon">📁</div>
+                    <p>No categories found</p>
+                </div>
+                <table id="categoriesTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categoriesBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add Category</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="categoryForm" onsubmit="handleSubmit(event)">
+                <input type="hidden" id="categoryId">
+                
+                <div class="form-group">
+                    <label class="form-label">Name *</label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="categoryName" 
+                        required
+                        placeholder="e.g., Wildlife Photography"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea 
+                        class="form-textarea" 
+                        id="categoryDescription"
+                        placeholder="Brief description of this category..."
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-checkbox">
+                        <input 
+                            type="checkbox" 
+                            id="categoryActive" 
+                            checked
+                        >
+                        <label for="categoryActive">Active</label>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/v1';
+        let categories = [];
+        let editingId = null;
+
+        // Get admin token from session/localStorage
+        function getAuthToken() {
+            // Try to get from localStorage first
+            let token = localStorage.getItem('admin_token');
+            if (!token) {
+                // Try to get from sessionStorage
+                token = sessionStorage.getItem('admin_token');
+            }
+            return token;
+        }
+
+        // Fetch categories
+        async function fetchCategories() {
+            try {
+                const response = await fetch(`${API_BASE}/categories`);
+                if (!response.ok) throw new Error('Failed to fetch categories');
+                
+                categories = await response.json();
+                renderCategories();
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+                showToast('Failed to load categories', 'error');
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'block';
+            }
+        }
+
+        // Render categories table
+        function renderCategories() {
+            const tbody = document.getElementById('categoriesBody');
+            const table = document.getElementById('categoriesTable');
+            const loading = document.getElementById('loadingState');
+            const empty = document.getElementById('emptyState');
+
+            loading.style.display = 'none';
+
+            if (categories.length === 0) {
+                table.style.display = 'none';
+                empty.style.display = 'block';
+                return;
+            }
+
+            empty.style.display = 'none';
+            table.style.display = 'table';
+
+            tbody.innerHTML = categories.map(category => `
+                <tr>
+                    <td><strong>${category.name}</strong></td>
+                    <td><code>${category.slug}</code></td>
+                    <td>${category.description || '-'}</td>
+                    <td>
+                        <span class="status-badge ${category.is_active ? 'status-active' : 'status-inactive'}">
+                            ${category.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
+                    <td>${new Date(category.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary btn-sm" onclick="editCategory('${category.id}')">
+                                Edit
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="toggleActive('${category.id}', ${!category.is_active})">
+                                ${category.is_active ? 'Deactivate' : 'Activate'}
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteCategory('${category.id}')">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Show create modal
+        function showCreateModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Add Category';
+            document.getElementById('categoryForm').reset();
+            document.getElementById('categoryId').value = '';
+            document.getElementById('categoryActive').checked = true;
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        // Edit category
+        function editCategory(id) {
+            const category = categories.find(c => c.id === id);
+            if (!category) return;
+
+            editingId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Category';
+            document.getElementById('categoryId').value = id;
+            document.getElementById('categoryName').value = category.name;
+            document.getElementById('categoryDescription').value = category.description || '';
+            document.getElementById('categoryActive').checked = category.is_active;
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+            editingId = null;
+        }
+
+        // Handle form submit
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            const token = getAuthToken();
+            if (!token) {
+                showToast('Please log in as admin', 'error');
+                return;
+            }
+
+            const data = {
+                name: document.getElementById('categoryName').value,
+                description: document.getElementById('categoryDescription').value,
+                is_active: document.getElementById('categoryActive').checked
+            };
+
+            try {
+                const url = editingId 
+                    ? `${API_BASE}/categories/${editingId}`
+                    : `${API_BASE}/categories`;
+                
+                const method = editingId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to save category');
+                }
+
+                showToast(editingId ? 'Category updated successfully' : 'Category created successfully', 'success');
+                closeModal();
+                fetchCategories();
+            } catch (error) {
+                console.error('Error saving category:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        // Toggle active status
+        async function toggleActive(id, newStatus) {
+            try {
+                const response = await fetch(`/admin/categories/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ is_active: newStatus }),
+                    credentials: 'same-origin'  // Include session cookie
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.detail || 'Failed to update status');
+                }
+
+                showToast('Status updated successfully', 'success');
+                fetchCategories();
+            } catch (error) {
+                console.error('Error updating status:', error);
+                showToast(`Failed to update status: ${error.message}`, 'error');
+            }
+        }
+
+        // Delete category
+        async function deleteCategory(id) {
+            if (!confirm('Are you sure you want to delete this category?')) return;
+
+            const token = getAuthToken();
+            if (!token) {
+                showToast('Please log in as admin', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/categories/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Failed to delete category');
+
+                showToast('Category deleted successfully', 'success');
+                fetchCategories();
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                showToast('Failed to delete category', 'error');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = categories.filter(category => 
+                category.name.toLowerCase().includes(searchTerm) ||
+                category.slug.toLowerCase().includes(searchTerm) ||
+                (category.description && category.description.toLowerCase().includes(searchTerm))
+            );
+            
+            const tbody = document.getElementById('categoriesBody');
+            tbody.innerHTML = filtered.map(category => `
+                <tr>
+                    <td><strong>${category.name}</strong></td>
+                    <td><code>${category.slug}</code></td>
+                    <td>${category.description || '-'}</td>
+                    <td>
+                        <span class="status-badge ${category.is_active ? 'status-active' : 'status-inactive'}">
+                            ${category.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
+                    <td>${new Date(category.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary btn-sm" onclick="editCategory('${category.id}')">
+                                Edit
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="toggleActive('${category.id}', ${!category.is_active})">
+                                ${category.is_active ? 'Deactivate' : 'Activate'}
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteCategory('${category.id}')">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        });
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize
+        fetchCategories();
+    </script>
+</body>
+</html>

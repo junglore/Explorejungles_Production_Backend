@@ -1,0 +1,555 @@
+<!-- Podcast Creation Form Template -->
+<div class="page-header">
+    <h1 class="page-title">Create New Podcast</h1>
+    <p class="page-subtitle">Upload and configure a new podcast episode</p>
+</div>
+
+<div id="message-container"></div>
+
+<div class="form-container">
+    <form id="createPodcastForm" class="admin-form" enctype="multipart/form-data">
+
+        <!-- Basic Information -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-info-circle"></i>
+                Basic Information
+            </h3>
+
+            <div class="form-group">
+                <label for="title">Podcast Title *</label>
+                <input type="text" id="title" name="title" required placeholder="Enter podcast episode title"
+                    maxlength="500" class="form-control">
+                <div class="field-error" id="title-error"></div>
+                <small class="field-help">A clear, engaging title for this podcast episode</small>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description"
+                    placeholder="Describe the podcast content, topics covered, and key takeaways..."
+                    class="form-control content-textarea" rows="6"></textarea>
+                <small class="field-help">Detailed description of the podcast content and topics</small>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="photographer">Host Name</label>
+                    <input type="text" id="photographer" name="photographer" placeholder="Enter host name"
+                        class="form-control">
+                    <small class="field-help">Name of the podcast host or presenter</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="national_park">Show Name</label>
+                    <input type="text" id="national_park" name="national_park" placeholder="Enter show or series name"
+                        class="form-control">
+                    <small class="field-help">Name of the podcast show or series</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="category_id">Category</label>
+                    <select id="category_id" name="category_id" class="form-control">
+                        <option value="">Select category...</option>
+                        {{category_options}}
+                    </select>
+                    <small class="field-help">Optional: Categorize this podcast for better organization</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audio File Upload -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-microphone"></i>
+                Audio File
+            </h3>
+
+            <div class="form-group">
+                <label for="audio_file">Audio File *</label>
+                <input type="file" id="audio_file" name="audio_file" required accept="audio/*,.mp3,.wav,.ogg,.m4a"
+                    class="file-input">
+                <div class="file-upload-area" id="audio-upload-area">
+                    <i class="fas fa-microphone"></i>
+                    <p>Click to upload audio file</p>
+                    <small>MP3, WAV, OGG, M4A (Max: 100MB)</small>
+                </div>
+                <div id="audio-preview"></div>
+                <div class="field-error" id="audio-file-error"></div>
+                <small class="field-help">Upload the main podcast audio file</small>
+            </div>
+        </div>
+
+        <!-- Cover Image Upload -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-image"></i>
+                Cover Image
+            </h3>
+
+            <div class="form-group">
+                <label for="cover_image">Cover Image</label>
+                <input type="file" id="cover_image" name="cover_image" accept="image/*,.avif" class="file-input">
+                <div class="file-upload-area" id="image-upload-area">
+                    <i class="fas fa-image"></i>
+                    <p>Click to upload cover image</p>
+                    <small>JPEG, PNG, GIF, WebP, AVIF (Max: 50MB)</small>
+                </div>
+                <div id="image-preview"></div>
+                <small class="field-help">Optional: Add a cover image for the podcast</small>
+            </div>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="form-section">
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Create Podcast
+                </button>
+                <a href="/admin/podcasts" class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .form-container {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .admin-form {
+        max-width: 800px;
+    }
+
+    .form-section {
+        margin-bottom: 2.5rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .form-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .section-title {
+        color: #2d3748;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        background: white;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+
+    .content-textarea {
+        min-height: 120px;
+        resize: vertical;
+        font-family: inherit;
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .file-upload-area {
+        border: 2px dashed #cbd5e0;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: #f7fafc;
+    }
+
+    .file-upload-area:hover {
+        border-color: #4299e1;
+        background: #ebf8ff;
+    }
+
+    .file-upload-area i {
+        font-size: 2rem;
+        color: #a0aec0;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .file-upload-area p {
+        margin: 0.5rem 0;
+        color: #4a5568;
+        font-weight: 500;
+    }
+
+    .file-upload-area small {
+        color: #718096;
+        font-size: 0.875rem;
+    }
+
+    .field-help {
+        display: block;
+        color: #718096;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        font-style: italic;
+    }
+
+    .field-error {
+        color: #e53e3e;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: none;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-start;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+    }
+
+    .btn-secondary {
+        background: #f7fafc;
+        color: #4a5568;
+        border: 2px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+        background: #edf2f7;
+        border-color: #cbd5e0;
+    }
+
+    #audio-preview,
+    #image-preview {
+        margin-top: 1rem;
+    }
+
+    .audio-preview-item,
+    .image-preview-item {
+        position: relative;
+        display: inline-block;
+        margin-right: 1rem;
+        padding: 1rem;
+        background: #f7fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .image-preview-item img {
+        max-width: 200px;
+        max-height: 150px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .audio-preview-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .audio-preview-item i {
+        font-size: 1.5rem;
+        color: #4299e1;
+    }
+
+    .remove-file {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #e53e3e;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .form-container {
+            padding: 1rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    // File upload handlers
+    document.addEventListener('DOMContentLoaded', function () {
+        // Audio file upload
+        document.getElementById('audio_file').addEventListener('change', function (e) {
+            handleAudioUpload(e);
+        });
+
+        document.getElementById('audio-upload-area').addEventListener('click', function () {
+            document.getElementById('audio_file').click();
+        });
+
+        // Image file upload
+        document.getElementById('cover_image').addEventListener('change', function (e) {
+            handleImageUpload(e);
+        });
+
+        document.getElementById('image-upload-area').addEventListener('click', function () {
+            document.getElementById('cover_image').click();
+        });
+
+        // Form submission
+        document.getElementById('createPodcastForm').addEventListener('submit', handleFormSubmit);
+    });
+
+    function handleAudioUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validate file type
+        const allowedTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/m4a'];
+        if (!allowedTypes.includes(file.type)) {
+            showError('audio-file-error', 'Please select a valid audio file (MP3, WAV, OGG, M4A)');
+            return;
+        }
+
+        // Validate file size (100MB)
+        if (file.size > 100 * 1024 * 1024) {
+            showError('audio-file-error', 'Audio file must be less than 100MB');
+            return;
+        }
+
+        clearError('audio-file-error');
+
+        // Show preview
+        const preview = document.getElementById('audio-preview');
+        preview.innerHTML = `
+            <div class="audio-preview-item">
+                <i class="fas fa-music"></i>
+                <div>
+                    <strong>${file.name}</strong><br>
+                    <small>${formatFileSize(file.size)}</small>
+                </div>
+                <button type="button" class="remove-file" onclick="removeAudioFile()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+    }
+
+    function handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            showError('cover-image-error', 'Please select a valid image file');
+            return;
+        }
+
+        // Validate file size (50MB)
+        if (file.size > 50 * 1024 * 1024) {
+            showError('cover-image-error', 'Image file must be less than 50MB');
+            return;
+        }
+
+        clearError('cover-image-error');
+
+        // Show preview
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = `
+                <div class="image-preview-item">
+                    <img src="${e.target.result}" alt="Cover preview">
+                    <button type="button" class="remove-file" onclick="removeImageFile()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removeAudioFile() {
+        document.getElementById('audio_file').value = '';
+        document.getElementById('audio-preview').innerHTML = '';
+    }
+
+    function removeImageFile() {
+        document.getElementById('cover_image').value = '';
+        document.getElementById('image-preview').innerHTML = '';
+    }
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+
+        // Clear previous errors
+        clearAllErrors();
+
+        // Validate required fields
+        const title = document.getElementById('title').value.trim();
+        const audioFile = document.getElementById('audio_file').files[0];
+
+        let hasErrors = false;
+
+        if (!title) {
+            showError('title-error', 'Title is required');
+            hasErrors = true;
+        }
+
+        if (!audioFile) {
+            showError('audio-file-error', 'Audio file is required');
+            hasErrors = true;
+        }
+
+        if (hasErrors) return;
+
+        // Show loading state
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+        submitBtn.disabled = true;
+
+        try {
+            const formData = new FormData(event.target);
+
+            const response = await fetch('/admin/podcasts/create', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                showMessage('Podcast created successfully!', 'success');
+                setTimeout(() => {
+                    window.location.href = '/admin/podcasts/list';
+                }, 1500);
+            } else {
+                const errorText = await response.text();
+                showMessage('Error creating podcast: ' + response.status, 'error');
+            }
+        } catch (error) {
+            showMessage('Network error: ' + error.message, 'error');
+        } finally {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+
+    function showError(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    }
+
+    function clearError(elementId) {
+        const errorElement = document.getElementById(elementId);
+        if (errorElement) {
+            errorElement.style.display = 'none';
+        }
+    }
+
+    function clearAllErrors() {
+        const errors = document.querySelectorAll('.field-error');
+        errors.forEach(error => error.style.display = 'none');
+    }
+
+    function showMessage(message, type) {
+        const container = document.getElementById('message-container');
+        container.innerHTML = `
+            <div class="message ${type}">
+                ${message}
+            </div>
+        `;
+
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 5000);
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+</script>

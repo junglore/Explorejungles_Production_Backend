@@ -1,0 +1,212 @@
+<!-- Podcast Management Dashboard Template -->
+<div class="page-header">
+    <h1 class="page-title">Podcast Management Dashboard</h1>
+    <p class="page-subtitle">Manage your podcast collection and episodes</p>
+</div>
+
+<div class="dashboard-section">
+    <div class="section-header">
+        <h3><i class="fas fa-podcast"></i> Quick Stats</h3>
+        <p>Podcast collection overview</p>
+    </div>
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-podcast"></i></div>
+                <div class="stat-content">
+                    <h4 id="totalPodcasts">-</h4>
+                    <p>Total Podcasts</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-hdd"></i></div>
+                <div class="stat-content">
+                    <h4 id="totalSize">-</h4>
+                    <p>Total Storage Used</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-content">
+                    <h4 id="lastUpload">-</h4>
+                    <p>Last Upload</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-section">
+    <div class="section-header">
+        <h3><i class="fas fa-tools"></i> Quick Actions</h3>
+        <p>Common podcast management tasks</p>
+    </div>
+    <div class="actions-section">
+        <div class="action-grid">
+            <a href="/admin/podcasts/create" class="action-card primary">
+                <div class="action-icon">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Create New Podcast</h4>
+                    <p>Upload and configure a new podcast episode</p>
+                </div>
+            </a>
+
+            <a href="/admin/podcasts/list" class="action-card secondary">
+                <div class="action-icon">
+                    <i class="fas fa-list"></i>
+                </div>
+                <div class="action-content">
+                    <h4>View All Podcasts</h4>
+                    <p>Browse and manage existing podcasts</p>
+                </div>
+            </a>
+
+            <a href="/admin/media/library?type=podcast" class="action-card info">
+                <div class="action-icon">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Media Library</h4>
+                    <p>Access podcast files in media library</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-section {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .section-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-header h3 {
+        color: #2d3748;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-header p {
+        color: #718096;
+        margin: 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        opacity: 0.9;
+    }
+
+    .stat-content h4 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .stat-content p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 0.9rem;
+    }
+
+    .action-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .action-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+    }
+
+    .action-card.primary {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+    }
+
+    .action-card.secondary {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        color: #2d3748;
+    }
+
+    .action-card.info {
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        color: #2d3748;
+    }
+
+    .action-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
+    }
+
+    .action-icon {
+        font-size: 2rem;
+        opacity: 0.9;
+    }
+
+    .action-content h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .action-content p {
+        margin: 0;
+        opacity: 0.8;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+
+        .stats-grid,
+        .action-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-section {
+            padding: 1rem;
+        }
+    }
+</style>

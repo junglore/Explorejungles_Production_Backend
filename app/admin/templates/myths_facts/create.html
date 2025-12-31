@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Myth vs Fact - Junglore Admin</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/admin-file-upload.css" rel="stylesheet">
+    <link href="/static/css/admin-forms.css" rel="stylesheet">
+    <style>
+        /* Include admin CSS styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f7f9fc;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .page-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .page-subtitle {
+            color: #718096;
+            font-size: 1.125rem;
+            font-weight: 400;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e2e8f0;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #16a34a, #15803d);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #16a34a;
+            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-control:hover {
+            border-color: #cbd5e0;
+        }
+
+        .content-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-label {
+            font-weight: 500;
+            color: #4a5568;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .form-checkbox {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+        }
+
+        .field-help {
+            display: block;
+            color: #718096;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .field-error {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(160, 174, 192, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(160, 174, 192, 0.4);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-start;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        }
+
+        .file-upload-area:hover {
+            border-color: #16a34a;
+            background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);
+            transform: translateY(-2px);
+        }
+
+        .file-upload-area i {
+            font-size: 2.5rem;
+            color: #16a34a;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-area p {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload-area small {
+            color: #718096;
+            font-size: 0.875rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        #image-preview {
+            margin-top: 1rem;
+        }
+
+        .image-preview-item {
+            position: relative;
+            display: inline-block;
+            margin-right: 1rem;
+        }
+
+        .image-preview-item img {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-preview-item .remove-image {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e53e3e;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .message {
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            border-left: 4px solid;
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            color: #22543d;
+            border-left-color: #38a169;
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            color: #742a2a;
+            border-left-color: #e53e3e;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-header">
+        <h1 class="page-title">Create Myth vs Fact</h1>
+        <p class="page-subtitle">Create engaging educational content about wildlife myths and facts</p>
+    </div>
+
+    <div id="message-container"></div>
+
+    <div class="form-container">
+        <form id="createMythFactForm" class="admin-form" enctype="multipart/form-data"
+            data-success-message="Myth vs fact created successfully!" data-redirect-url="/admin/myths-facts"
+            data-action="Creating">
+
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h3 class="section-title">Basic Information</h3>
+
+                <div class="form-group">
+                    <label for="title">Title *</label>
+                    <input type="text" id="title" name="title" required
+                        placeholder="Enter a compelling title for this myth vs fact" maxlength="500"
+                        class="form-control">
+                    <div class="field-error" id="title-error"></div>
+                    <small class="field-help">A clear, engaging title that summarizes the myth being addressed</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category_id">Category</label>
+                        <select id="category_id" name="category_id" class="form-control">
+                            <option value="">Select category...</option>
+                            {{ category_options|safe }}
+                        </select>
+                        <small class="field-help">Optional: Categorize this content for better organization</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="is_featured">Featured Content</label>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="is_featured" name="is_featured" value="true"
+                                class="form-checkbox">
+                            <label for="is_featured" class="checkbox-label">Mark as featured content</label>
+                        </div>
+                        <small class="field-help">Featured content appears prominently in the game</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Section -->
+            <div class="form-section">
+                <h3 class="section-title">Content</h3>
+
+                <div class="form-group">
+                    <label for="myth_content">Myth Statement *</label>
+                    <textarea id="myth_content" name="myth_content" required
+                        placeholder="Describe the common myth or misconception..." class="form-control content-textarea"
+                        rows="4"></textarea>
+                    <div class="field-error" id="myth-content-error"></div>
+                    <small class="field-help">Clearly state the myth or misconception that needs to be addressed</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="fact_content">Fact Explanation *</label>
+                    <textarea id="fact_content" name="fact_content" required
+                        placeholder="Provide the accurate information and explanation..."
+                        class="form-control content-textarea" rows="6"></textarea>
+                    <div class="field-error" id="fact-content-error"></div>
+                    <small class="field-help">Provide accurate, educational information that corrects the myth</small>
+                </div>
+
+                <!-- ✅ NEW: Card Type Selection -->
+                <div class="form-group">
+                    <label for="type" style="font-weight: 700; font-size: 1rem; color: #2d3748;">
+                        <i class="fas fa-eye" style="color: #16a34a;"></i> Which Card to Show to User? *
+                    </label>
+                    <div style="border: 2px solid #cbd5e0; border-radius: 12px; padding: 1.5rem; background: #f7fafc;">
+                        <div style="margin-bottom: 1.25rem;">
+                            <label style="display: flex; align-items: start; cursor: pointer; padding: 1rem; border-radius: 8px; border: 2px solid #e2e8f0; background: white; transition: all 0.2s;">
+                                <input type="radio" name="type" id="type_myth" value="myth" checked required 
+                                       style="margin-top: 0.25rem; margin-right: 0.75rem; cursor: pointer;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; font-size: 1rem; color: #e53e3e; margin-bottom: 0.375rem;">
+                                        🔴 Show Myth Card
+                                    </div>
+                                    <div style="font-size: 0.875rem; color: #718096; line-height: 1.5;">
+                                        • Displays the <strong>myth statement</strong> (false claim)<br>
+                                        • User should swipe <strong>LEFT</strong> to mark as false<br>
+                                        • After answer, shows the fact explanation
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div>
+                            <label style="display: flex; align-items: start; cursor: pointer; padding: 1rem; border-radius: 8px; border: 2px solid #e2e8f0; background: white; transition: all 0.2s;">
+                                <input type="radio" name="type" id="type_fact" value="fact" required
+                                       style="margin-top: 0.25rem; margin-right: 0.75rem; cursor: pointer;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; font-size: 1rem; color: #16a34a; margin-bottom: 0.375rem;">
+                                        🟢 Show Fact Card
+                                    </div>
+                                    <div style="font-size: 0.875rem; color: #718096; line-height: 1.5;">
+                                        • Displays the <strong>fact explanation</strong> (true statement)<br>
+                                        • User should swipe <strong>RIGHT</strong> to mark as true<br>
+                                        • After answer, shows the myth that people believe
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <small class="field-help" style="color: #e53e3e; font-weight: 600; margin-top: 0.5rem; display: block;">
+                        <i class="fas fa-info-circle"></i> This controls which text appears on the card during gameplay
+                    </small>
+                </div>
+            </div>
+
+            <!-- Media Section -->
+            <div class="form-section">
+                <h3 class="section-title">Media</h3>
+
+                <div class="form-group">
+                    <label for="image">Supporting Image</label>
+                    <input type="file" id="image" name="image" accept="image/*" class="file-input">
+                    <div class="file-upload-area" id="image-upload-area">
+                        <i class="fas fa-image"></i>
+                        <p>Click to upload supporting image</p>
+                        <small>JPEG, PNG, GIF, WebP, AVIF (Max: 10MB)</small>
+                    </div>
+                    <div id="image-preview"></div>
+                    <small class="field-help">Optional: Add a relevant image to support the educational content</small>
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="form-section">
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Create Myth vs Fact
+                    </button>
+                    <a href="/admin/myths-facts" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Enhanced file upload handler with preview
+        function handleFileUpload(event, previewId, type) {
+            const file = event.target.files[0];
+            const preview = document.getElementById(previewId);
+
+            if (!file || !preview) return;
+
+            // Clear previous preview
+            preview.innerHTML = '';
+
+            if (type === 'image') {
+                // Validate image file
+                const allowedTypes = [
+                    'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/avif'
+                ];
+
+                if (!allowedTypes.includes(file.type)) {
+                    showMessage('Please select a valid image file (JPEG, PNG, GIF, WebP, or AVIF)', 'error');
+                    event.target.value = '';
+                    return;
+                }
+
+                // Check file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    showMessage('Image file size must be less than 10MB', 'error');
+                    event.target.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.innerHTML = `
+                        <div style="margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; background: #f7fafc;">
+                            <img src="${e.target.result}" style="max-width: 200px; max-height: 200px; border-radius: 8px; display: block; margin: 0 auto;">
+                            <p style="text-align: center; margin-top: 0.5rem; font-size: 0.875rem; color: #718096;">${file.name}</p>
+                            <p style="text-align: center; font-size: 0.75rem; color: #a0aec0;">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showMessage(message, type = 'success') {
+            const container = document.getElementById('message-container');
+            if (container) {
+                const messageEl = document.createElement('div');
+                messageEl.className = `message ${type}`;
+                messageEl.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span>${message}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: inherit; cursor: pointer; font-size: 1.2rem;">&times;</button>
+                    </div>
+                `;
+                container.appendChild(messageEl);
+
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (messageEl.parentElement) {
+                        messageEl.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        function showFieldError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+        }
+
+        function clearFieldError(fieldId) {
+            const errorElement = document.getElementById(fieldId);
+            if (errorElement) {
+                errorElement.textContent = '';
+                errorElement.style.display = 'none';
+            }
+        }
+
+        function clearAllErrors() {
+            const errorElements = document.querySelectorAll('.field-error');
+            errorElements.forEach(el => {
+                el.textContent = '';
+                el.style.display = 'none';
+            });
+        }
+
+        function validateRequired(fieldId, fieldName) {
+            const field = document.getElementById(fieldId);
+            const value = field ? field.value.trim() : '';
+
+            if (!value) {
+                showFieldError(fieldId + '-error', `${fieldName} is required`);
+                return false;
+            }
+
+            clearFieldError(fieldId + '-error');
+            return true;
+        }
+
+        function validateMinLength(fieldId, fieldName, minLength) {
+            const field = document.getElementById(fieldId);
+            const value = field ? field.value.trim() : '';
+
+            if (value.length < minLength) {
+                showFieldError(fieldId + '-error', `${fieldName} must be at least ${minLength} characters long`);
+                return false;
+            }
+
+            clearFieldError(fieldId + '-error');
+            return true;
+        }
+
+        function setFormLoading(formId, isLoading) {
+            const form = document.getElementById(formId);
+            if (!form) return;
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const inputs = form.querySelectorAll('input, textarea, select, button');
+
+            if (isLoading) {
+                form.classList.add('loading');
+                inputs.forEach(input => input.disabled = true);
+
+                if (submitBtn) {
+                    submitBtn.innerHTML = `
+                        <span class="spinner"></span>
+                        Creating...
+                    `;
+                }
+            } else {
+                form.classList.remove('loading');
+                inputs.forEach(input => input.disabled = false);
+
+                if (submitBtn) {
+                    submitBtn.innerHTML = submitBtn.dataset.originalText || 'Create Myth vs Fact';
+                }
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize file upload handlers
+            document.getElementById('image').addEventListener('change', function (e) {
+                handleFileUpload(e, 'image-preview', 'image');
+            });
+
+            // Upload area click handler
+            const uploadArea = document.getElementById('image-upload-area');
+            if (uploadArea) {
+                uploadArea.addEventListener('click', function () {
+                    document.getElementById('image').click();
+                });
+            }
+
+            // Store original button text
+            const submitBtn = document.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.dataset.originalText = submitBtn.innerHTML;
+            }
+
+            // Form submission handler
+            const form = document.getElementById('createMythFactForm');
+            if (form) {
+                form.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    // Clear previous errors
+                    clearAllErrors();
+
+                    // Validate form
+                    let isValid = true;
+
+                    if (!validateRequired('title', 'Title')) isValid = false;
+                    if (!validateMinLength('title', 'Title', 5)) isValid = false;
+                    if (!validateRequired('myth_content', 'Myth Statement')) isValid = false;
+                    if (!validateMinLength('myth_content', 'Myth Statement', 10)) isValid = false;
+                    if (!validateRequired('fact_content', 'Fact Explanation')) isValid = false;
+                    if (!validateMinLength('fact_content', 'Fact Explanation', 10)) isValid = false;
+
+                    if (!isValid) {
+                        showMessage('Please fix the validation errors above', 'error');
+                        return;
+                    }
+
+                    // Set loading state
+                    setFormLoading('createMythFactForm', true);
+
+                    try {
+                        const formData = new FormData(form);
+
+                        const response = await fetch('/admin/myths-facts/create', {
+                            method: 'POST',
+                            body: formData,
+                            credentials: 'same-origin'
+                        });
+
+                        if (response.ok) {
+                            showMessage('Myth vs fact created successfully!', 'success');
+                            setTimeout(() => {
+                                window.location.href = '/admin/myths-facts';
+                            }, 1500);
+                        } else {
+                            const errorData = await response.json().catch(() => ({ detail: 'Unknown error occurred' }));
+
+                            if (errorData.detail && typeof errorData.detail === 'object') {
+                                // Handle validation errors
+                                Object.keys(errorData.detail).forEach(field => {
+                                    const errorMsg = errorData.detail[field];
+                                    showFieldError(field + '-error', errorMsg);
+                                });
+                                showMessage('Please fix the validation errors', 'error');
+                            } else {
+                                showMessage(errorData.detail || 'Error creating myth vs fact', 'error');
+                            }
+                        }
+                    } catch (error) {
+                        showMessage('Network error: ' + error.message, 'error');
+                    } finally {
+                        setFormLoading('createMythFactForm', false);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script src="/static/js/admin-file-upload.js"></script>
+    <script src="/static/js/admin-forms.js"></script>
+</body>
+
+</html>

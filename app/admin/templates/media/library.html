@@ -1,0 +1,549 @@
+<div class="page-header">
+    <h1 class="page-title">Media Library</h1>
+    <p class="page-subtitle">Browse and manage your media collection</p>
+</div>
+
+<!-- Success message container -->
+<div id="success-message" class="alert alert-success" style="display: none;">
+    <i class="fas fa-check-circle"></i>
+    <span id="success-text"></span>
+    <button type="button" class="close-btn" onclick="hideSuccessMessage()">&times;</button>
+</div>
+
+<div class="library-controls">
+    <div class="search-section">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search media files..."
+            style="max-width: 300px;">
+        <button onclick="searchMedia()" class="btn btn-primary">
+            <i class="fas fa-search"></i> Search
+        </button>
+    </div>
+
+    <div class="filter-section">
+        <select id="typeFilter" class="form-control" onchange="filterMedia()">
+            <option value="">All Types</option>
+            <option value="image">Images</option>
+            <option value="video">Videos</option>
+        </select>
+
+        <select id="sortFilter" class="form-control" onchange="filterMedia()">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="name">Name A-Z</option>
+            <option value="size">Size (Largest)</option>
+        </select>
+    </div>
+</div>
+
+<div class="media-grid" id="mediaGrid">
+    <!-- Media items will be populated here -->
+</div>
+
+<div class="pagination" id="pagination">
+    <!-- Pagination controls will be populated here -->
+</div>
+
+<script>
+    let currentPage = 1;
+    let itemsPerPage = 20;
+    let allMedia = [];
+    let filteredMedia = [];
+
+    // Initialize media library
+    document.addEventListener('DOMContentLoaded', function () {
+        loadMedia();
+        checkForSuccessMessage();
+    });
+
+    // Check for success message from upload redirect
+    function checkForSuccessMessage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const uploadSuccess = urlParams.get('upload_success');
+        const mediaId = urlParams.get('media_id');
+
+        if (uploadSuccess === 'true' && mediaId) {
+            showSuccessMessage(`Media uploaded successfully! ID: ${mediaId}`);
+            // Clean up URL parameters
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+            // Refresh media to show the new upload
+            loadMedia();
+        }
+    }
+
+    function showSuccessMessage(message) {
+        const successDiv = document.getElementById('success-message');
+        const successText = document.getElementById('success-text');
+
+        if (successDiv && successText) {
+            successText.textContent = message;
+            successDiv.style.display = 'block';
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                hideSuccessMessage();
+            }, 5000);
+        }
+    }
+
+    function hideSuccessMessage() {
+        const successDiv = document.getElementById('success-message');
+        if (successDiv) {
+            successDiv.style.display = 'none';
+        }
+    }
+
+    // Utility function to format file size
+    function formatFileSize(bytes) {
+        if (!bytes) return '0 B';
+
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+        return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    async function loadMedia() {
+        try {
+            console.log('Loading media from API...');
+            const response = await fetch('/api/v1/media/');
+            console.log('API response status:', response.status);
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Media data received:', data);
+                allMedia = data || [];
+                filteredMedia = [...allMedia];
+                displayMedia();
+            } else {
+                console.error('API response not ok:', response.status, response.statusText);
+                showMessage('Failed to load media library', 'error');
+            }
+        } catch (error) {
+            console.error('Error loading media:', error);
+            showMessage('Error loading media library', 'error');
+        }
+    }
+
+    function showMessage(message, type) {
+        // Simple message display
+        const grid = document.getElementById('mediaGrid');
+        grid.innerHTML = `<div class="message ${type}">${message}</div>`;
+    }
+
+    function displayMedia() {
+        const grid = document.getElementById('mediaGrid');
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const pageMedia = filteredMedia.slice(startIndex, endIndex);
+
+        if (pageMedia.length === 0) {
+            grid.innerHTML = `
+            <div class="no-media">
+                <i class="fas fa-inbox" style="font-size: 3rem; color: #cbd5e0; margin-bottom: 1rem;"></i>
+                <h3>No media found</h3>
+                <p>Try adjusting your search or filters</p>
+            </div>
+        `;
+            return;
+        }
+
+        grid.innerHTML = pageMedia.map(media => `
+        <div class="media-item" data-id="${media.id}">
+            <div class="media-preview">
+                ${media.media_type === 'image'
+                ? `<img src="${media.file_url}" alt="${media.title || media.original_filename}" onerror="this.src='/admin/templates/placeholder-image.png'">`
+                : `<div class="video-placeholder">
+                         <i class="fas fa-video"></i>
+                         <span>${media.original_filename.split('.').pop().toUpperCase()}</span>
+                       </div>`
+            }
+                <div class="media-overlay">
+                    <button onclick="viewMedia('${media.id}')" class="btn-overlay">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button onclick="editMedia('${media.id}')" class="btn-overlay">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="deleteMedia('${media.id}')" class="btn-overlay btn-danger">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="media-info">
+                <h4 class="media-title">${media.title || media.original_filename}</h4>
+                <p class="media-meta">
+                    <span class="media-type">${media.media_type}</span>
+                    <span class="media-size">${formatFileSize(media.file_size)}</span>
+                </p>
+                <p class="media-date">${new Date(media.created_at).toLocaleDateString()}</p>
+                ${media.photographer ? `<p class="media-photographer">By: ${media.photographer}</p>` : ''}
+            </div>
+        </div>
+    `).join('');
+
+        updatePagination();
+    }
+
+    function searchMedia() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        filteredMedia = allMedia.filter(media =>
+            (media.title && media.title.toLowerCase().includes(searchTerm)) ||
+            media.original_filename.toLowerCase().includes(searchTerm) ||
+            (media.photographer && media.photographer.toLowerCase().includes(searchTerm))
+        );
+        currentPage = 1;
+        displayMedia();
+    }
+
+    function filterMedia() {
+        const typeFilter = document.getElementById('typeFilter').value;
+        const sortFilter = document.getElementById('sortFilter').value;
+
+        filteredMedia = allMedia.filter(media =>
+            !typeFilter || media.type === typeFilter
+        );
+
+        // Sort media
+        switch (sortFilter) {
+            case 'newest':
+                filteredMedia.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                break;
+            case 'oldest':
+                filteredMedia.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                break;
+            case 'name':
+                filteredMedia.sort((a, b) => (a.title || a.filename).localeCompare(b.title || b.filename));
+                break;
+            case 'size':
+                filteredMedia.sort((a, b) => b.file_size - a.file_size);
+                break;
+        }
+
+        currentPage = 1;
+        displayMedia();
+    }
+
+    function updatePagination() {
+        const totalPages = Math.ceil(filteredMedia.length / itemsPerPage);
+        const pagination = document.getElementById('pagination');
+
+        if (totalPages <= 1) {
+            pagination.innerHTML = '';
+            return;
+        }
+
+        let paginationHTML = '<div class="pagination-controls">';
+
+        // Previous button
+        if (currentPage > 1) {
+            paginationHTML += `<button onclick="changePage(${currentPage - 1})" class="btn btn-secondary">Previous</button>`;
+        }
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                paginationHTML += `<span class="current-page">${i}</span>`;
+            } else if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                paginationHTML += `<button onclick="changePage(${i})" class="btn btn-secondary">${i}</button>`;
+            } else if (i === currentPage - 3 || i === currentPage + 3) {
+                paginationHTML += `<span class="page-ellipsis">...</span>`;
+            }
+        }
+
+        // Next button
+        if (currentPage < totalPages) {
+            paginationHTML += `<button onclick="changePage(${currentPage + 1})" class="btn btn-secondary">Next</button>`;
+        }
+
+        paginationHTML += '</div>';
+        pagination.innerHTML = paginationHTML;
+    }
+
+    function changePage(page) {
+        currentPage = page;
+        displayMedia();
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function viewMedia(mediaId) {
+        // Implement media viewer
+        showMessage('Media viewer coming soon', 'info');
+    }
+
+    function editMedia(mediaId) {
+        // Navigate to edit page
+        window.location.href = `/admin/media/edit/${mediaId}`;
+    }
+
+    async function deleteMedia(mediaId) {
+        if (!confirm('Are you sure you want to delete this media file? This action cannot be undone.')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/admin/media/delete/${mediaId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                showMessage('Media deleted successfully', 'success');
+                loadMedia(); // Reload the library
+            } else {
+                showMessage('Failed to delete media', 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting media:', error);
+            showMessage('Error deleting media', 'error');
+        }
+    }
+</script>
+
+<style>
+    .library-controls {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .search-section {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        align-items: center;
+    }
+
+    .filter-section {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .filter-section select {
+        min-width: 150px;
+    }
+
+    .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .media-item {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+    .media-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .media-preview {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .media-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .video-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        color: #718096;
+    }
+
+    .video-placeholder i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .media-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .media-item:hover .media-overlay {
+        opacity: 1;
+    }
+
+    .btn-overlay {
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #4a5568;
+    }
+
+    .btn-overlay:hover {
+        background: white;
+        transform: scale(1.1);
+    }
+
+    .btn-overlay.btn-danger:hover {
+        background: #e53e3e;
+        color: white;
+    }
+
+    .media-info {
+        padding: 1rem;
+    }
+
+    .media-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .media-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .media-type {
+        background: #e2e8f0;
+        color: #4a5568;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .media-size {
+        color: #718096;
+    }
+
+    .media-date {
+        color: #a0aec0;
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .media-photographer {
+        color: #718096;
+        font-size: 0.875rem;
+        font-style: italic;
+    }
+
+    .no-media {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem;
+        color: #a0aec0;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .pagination-controls {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .current-page {
+        background: #16a34a;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .page-ellipsis {
+        color: #718096;
+        padding: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+
+        .search-section,
+        .filter-section {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .media-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+    }
+
+    /* Success message styles */
+    .alert {
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+    }
+
+    .alert-success {
+        background: #d1fae5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+    }
+
+    .alert i {
+        font-size: 1.25rem;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 1.5rem;
+        cursor: pointer;
+        margin-left: auto;
+        padding: 0;
+        line-height: 1;
+    }
+
+    .close-btn:hover {
+        opacity: 0.7;
+    }
+</style>

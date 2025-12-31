@@ -1,0 +1,70 @@
+"""
+Add is_featured and featured_at columns to video_series table
+"""
+
+import asyncio
+import sys
+from sqlalchemy import text
+from app.db.database import get_db_session
+
+
+async def add_featured_columns():
+    """Add featured columns to video_series table"""
+    
+    async with get_db_session() as session:
+        try:
+            # Check if columns already exist
+            check_query = text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = 'video_series' 
+                AND column_name IN ('is_featured', 'featured_at')
+            """)
+            result = await session.execute(check_query)
+            existing_columns = [row[0] for row in result.fetchall()]
+            
+            if 'is_featured' not in existing_columns:
+                print("Adding is_featured column...")
+                await session.execute(text("""
+                    ALTER TABLE video_series 
+                    ADD COLUMN is_featured BOOLEAN DEFAULT FALSE NOT NULL
+                """))
+                print("✅ is_featured column added")
+            else:
+                print("⏭️  is_featured column already exists")
+            
+            if 'featured_at' not in existing_columns:
+                print("Adding featured_at column...")
+                await session.execute(text("""
+                    ALTER TABLE video_series 
+                    ADD COLUMN featured_at TIMESTAMP WITH TIME ZONE
+                """))
+                print("✅ featured_at column added")
+            else:
+                print("⏭️  featured_at column already exists")
+            
+            # Create index for faster featured series lookup
+            print("Creating index...")
+            try:
+                await session.execute(text("""
+                    CREATE INDEX IF NOT EXISTS ix_video_series_featured 
+                    ON video_series(is_featured, featured_at DESC)
+                """))
+                print("✅ Index created")
+            except Exception as e:
+                print(f"⚠️  Index might already exist: {e}")
+            
+            await session.commit()
+            print("\n✅ All migrations completed successfully!")
+            
+        except Exception as e:
+            await session.rollback()
+            print(f"\n❌ Error during migration: {e}")
+            import traceback
+            traceback.print_exc()
+            sys.exit(1)
+
+
+if __name__ == "__main__":
+    print("🚀 Starting featured series migration...\n")
+    asyncio.run(add_featured_columns())

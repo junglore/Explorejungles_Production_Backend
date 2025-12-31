@@ -1,0 +1,463 @@
+/**
+ * Enhanced File Upload Styles for Admin Panel
+ * Includes drag-and-drop, animations, and responsive design
+ */
+
+/* Base upload area styling */
+.file-upload-area {
+    border: 2px dashed #cbd5e0;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.file-upload-area::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #16a34a, #15803d, #16a34a);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.file-upload-area:hover {
+    border-color: #16a34a;
+    background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.2);
+}
+
+.file-upload-area:hover::before {
+    opacity: 0.1;
+}
+
+.file-upload-area.dragover {
+    border-color: #16a34a !important;
+    background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%) !important;
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3);
+}
+
+.file-upload-area.dragover::before {
+    opacity: 0.2;
+}
+
+.file-upload-area i {
+    font-size: 2.5rem;
+    color: #16a34a;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.file-upload-area:hover i {
+    transform: scale(1.1);
+    color: #15803d;
+}
+
+.file-upload-area p {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.file-upload-area:hover p {
+    color: #2d3748;
+}
+
+.file-upload-area small {
+    color: #718096;
+    font-size: 0.875rem;
+    transition: color 0.3s ease;
+}
+
+.file-upload-area:hover small {
+    color: #4a5568;
+}
+
+/* File input hidden */
+.file-input {
+    display: none;
+}
+
+/* Preview container */
+.file-preview-container {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.file-preview-item {
+    position: relative;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    animation: slideInUp 0.3s ease;
+}
+
+.file-preview-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Image preview */
+.image-preview {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    background: #f8fafc;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.image-preview:hover img {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-preview:hover .image-overlay {
+    opacity: 1;
+}
+
+/* File info */
+.file-info {
+    padding: 1rem;
+}
+
+.file-name {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.25rem;
+    word-break: break-word;
+    font-size: 0.9rem;
+    line-height: 1.3;
+}
+
+.file-size {
+    font-size: 0.875rem;
+    color: #718096;
+}
+
+/* Generic file preview */
+.file-preview {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.file-icon {
+    font-size: 2rem;
+    color: #16a34a;
+    min-width: 40px;
+}
+
+.file-preview .file-info {
+    flex: 1;
+    padding: 0;
+}
+
+.file-preview .remove-file-btn {
+    position: static;
+    margin-left: auto;
+}
+
+/* Remove button */
+.remove-file-btn {
+    background: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+}
+
+.remove-file-btn:hover {
+    background: #c53030;
+    transform: scale(1.1);
+}
+
+.remove-file-btn:active {
+    transform: scale(0.95);
+}
+
+/* Current image display */
+.current-image {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f7fafc;
+    text-align: center;
+}
+
+.current-image img {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.current-image .image-actions {
+    text-align: center;
+}
+
+.current-image p {
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+/* Progress bar for uploads */
+.upload-progress {
+    width: 100%;
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.upload-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #16a34a, #15803d);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* Loading states */
+.file-upload-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.file-upload-loading .file-upload-area {
+    cursor: not-allowed;
+}
+
+/* Error states */
+.file-upload-error {
+    border-color: #e53e3e !important;
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%) !important;
+}
+
+.file-upload-error i {
+    color: #e53e3e !important;
+}
+
+/* Success states */
+.file-upload-success {
+    border-color: #16a34a !important;
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%) !important;
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+.file-upload-pulse {
+    animation: pulse 2s infinite;
+}
+
+.file-upload-shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Drag and drop visual feedback */
+.drag-active {
+    position: relative;
+}
+
+.drag-active::after {
+    content: 'Drop files here';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(22, 163, 74, 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border-radius: inherit;
+    z-index: 10;
+}
+
+/* Multiple file support */
+.file-upload-multiple .file-preview-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.file-upload-multiple .image-preview {
+    height: 120px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .file-upload-area {
+        padding: 2rem 1rem;
+    }
+
+    .file-upload-area i {
+        font-size: 2rem;
+    }
+
+    .file-upload-area p {
+        font-size: 1rem;
+    }
+
+    .file-preview-container {
+        grid-template-columns: 1fr;
+    }
+
+    .file-preview-item {
+        max-width: 100%;
+    }
+
+    .image-preview {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .file-upload-area {
+        padding: 1.5rem 1rem;
+    }
+
+    .file-preview-container {
+        gap: 0.75rem;
+    }
+
+    .file-info {
+        padding: 0.75rem;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .file-upload-area {
+        border-color: #000;
+        background: #fff;
+    }
+
+    .file-upload-area:hover {
+        border-color: #000;
+        background: #f0f0f0;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+    .file-upload-area,
+    .file-preview-item,
+    .image-preview img,
+    .remove-file-btn {
+        transition: none;
+    }
+
+    .file-preview-item {
+        animation: none;
+    }
+}
+
+/* Print styles */
+@media print {
+
+    .file-upload-area,
+    .remove-file-btn {
+        display: none;
+    }
+
+    .file-preview-container {
+        display: block;
+    }
+
+    .file-preview-item {
+        break-inside: avoid;
+        margin-bottom: 1rem;
+    }
+}

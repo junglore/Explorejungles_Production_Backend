@@ -1,0 +1,4479 @@
+{
+  "animal_profiles": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "category_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "common_name",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "scientific_name",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "other_names",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "kingdom",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "phylum",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "class_name",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "order",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "family",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "genus",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "species",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "physical_description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "average_weight_kg",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "average_length_cm",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "average_height_cm",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "lifespan_years",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "habitat_types",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "geographic_distribution",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "habitat_description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "diet_type",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "diet_description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "behavior_description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "social_structure",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "conservation_status",
+        "type": "USER-DEFINED",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "population_estimate",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "conservation_threats",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "conservation_efforts",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "profile_image_url",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "gallery_images",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "featured_video_url",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "fun_facts",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "cultural_significance",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "profile_metadata",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "view_count",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "is_featured",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_active",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_animal_profiles",
+        "definition": "CREATE UNIQUE INDEX pk_animal_profiles ON public.animal_profiles USING btree (id)"
+      },
+      {
+        "name": "ix_animal_profiles_scientific_name",
+        "definition": "CREATE INDEX ix_animal_profiles_scientific_name ON public.animal_profiles USING btree (scientific_name)"
+      },
+      {
+        "name": "ix_animal_profiles_common_name",
+        "definition": "CREATE INDEX ix_animal_profiles_common_name ON public.animal_profiles USING btree (common_name)"
+      }
+    ]
+  },
+  "animal_sightings": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "animal_profile_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "title",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "location_name",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "latitude",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "longitude",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "country",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "sighting_date",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "photo_urls",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_verified",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "verification_notes",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_animal_sightings",
+        "definition": "CREATE UNIQUE INDEX pk_animal_sightings ON public.animal_sightings USING btree (id)"
+      }
+    ]
+  },
+  "anti_gaming_tracking": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "activity_type",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "activity_reference_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "completion_time_seconds",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "score_percentage",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "suspicious_patterns",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "risk_score",
+        "type": "double precision",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "is_flagged",
+        "type": "boolean",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "admin_reviewed",
+        "type": "boolean",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_anti_gaming_tracking",
+        "definition": "CREATE UNIQUE INDEX pk_anti_gaming_tracking ON public.anti_gaming_tracking USING btree (id)"
+      },
+      {
+        "name": "idx_anti_gaming_user_activity",
+        "definition": "CREATE INDEX idx_anti_gaming_user_activity ON public.anti_gaming_tracking USING btree (user_id, activity_type)"
+      },
+      {
+        "name": "idx_anti_gaming_flagged",
+        "definition": "CREATE INDEX idx_anti_gaming_flagged ON public.anti_gaming_tracking USING btree (is_flagged, admin_reviewed)"
+      },
+      {
+        "name": "idx_anti_gaming_risk_score",
+        "definition": "CREATE INDEX idx_anti_gaming_risk_score ON public.anti_gaming_tracking USING btree (risk_score)"
+      }
+    ]
+  },
+  "categories": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "name",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "slug",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "image_url",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "viewer_count",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "is_active",
+        "type": "boolean",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "custom_credits",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "is_featured",
+        "type": "boolean",
+        "nullable": true,
+        "default": "false",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "mvf_enabled",
+        "type": "boolean",
+        "nullable": true,
+        "default": "true",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_categories",
+        "definition": "CREATE UNIQUE INDEX pk_categories ON public.categories USING btree (id)"
+      },
+      {
+        "name": "ix_categories_is_active",
+        "definition": "CREATE INDEX ix_categories_is_active ON public.categories USING btree (is_active)"
+      },
+      {
+        "name": "ix_categories_name",
+        "definition": "CREATE UNIQUE INDEX ix_categories_name ON public.categories USING btree (name)"
+      },
+      {
+        "name": "ix_categories_slug",
+        "definition": "CREATE UNIQUE INDEX ix_categories_slug ON public.categories USING btree (slug)"
+      },
+      {
+        "name": "ix_categories_active_name",
+        "definition": "CREATE INDEX ix_categories_active_name ON public.categories USING btree (is_active, name)"
+      },
+      {
+        "name": "ix_categories_mvf_featured",
+        "definition": "CREATE INDEX ix_categories_mvf_featured ON public.categories USING btree (mvf_enabled, is_featured) WHERE (mvf_enabled = true)"
+      },
+      {
+        "name": "ix_categories_mvf_enabled",
+        "definition": "CREATE INDEX ix_categories_mvf_enabled ON public.categories USING btree (mvf_enabled, is_active) WHERE ((mvf_enabled = true) AND (is_active = true))"
+      }
+    ]
+  },
+  "chatbot_conversations": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "messages",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "conversation_metadata",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "started_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "last_message_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_chatbot_conversations",
+        "definition": "CREATE UNIQUE INDEX pk_chatbot_conversations ON public.chatbot_conversations USING btree (id)"
+      }
+    ]
+  },
+  "collection_myth_facts": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": "gen_random_uuid()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "collection_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "myth_fact_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "order_index",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "collection_myth_facts_pkey",
+        "definition": "CREATE UNIQUE INDEX collection_myth_facts_pkey ON public.collection_myth_facts USING btree (id)"
+      },
+      {
+        "name": "collection_myth_facts_collection_id_myth_fact_id_key",
+        "definition": "CREATE UNIQUE INDEX collection_myth_facts_collection_id_myth_fact_id_key ON public.collection_myth_facts USING btree (collection_id, myth_fact_id)"
+      },
+      {
+        "name": "collection_myth_facts_collection_id_order_index_key",
+        "definition": "CREATE UNIQUE INDEX collection_myth_facts_collection_id_order_index_key ON public.collection_myth_facts USING btree (collection_id, order_index)"
+      },
+      {
+        "name": "idx_collection_myths_collection",
+        "definition": "CREATE INDEX idx_collection_myths_collection ON public.collection_myth_facts USING btree (collection_id)"
+      },
+      {
+        "name": "idx_collection_myths_myth_fact",
+        "definition": "CREATE INDEX idx_collection_myths_myth_fact ON public.collection_myth_facts USING btree (myth_fact_id)"
+      },
+      {
+        "name": "idx_collection_myths_order",
+        "definition": "CREATE INDEX idx_collection_myths_order ON public.collection_myth_facts USING btree (collection_id, order_index)"
+      }
+    ]
+  },
+  "conservation_efforts": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "title",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "location",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "organization",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "image_url",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "impact_metrics",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "start_date",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "end_date",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_conservation_efforts",
+        "definition": "CREATE UNIQUE INDEX pk_conservation_efforts ON public.conservation_efforts USING btree (id)"
+      }
+    ]
+  },
+  "content": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "author_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "category_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "type",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "title",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "content",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "author_name",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 200,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "featured_image",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "banner",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "video",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "featured",
+        "type": "boolean",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "feature_place",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "slug",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "excerpt",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "meta_description",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "content_metadata",
+        "type": "json",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "view_count",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "status",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "published_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_content",
+        "definition": "CREATE UNIQUE INDEX pk_content ON public.content USING btree (id)"
+      },
+      {
+        "name": "ix_content_category_status",
+        "definition": "CREATE INDEX ix_content_category_status ON public.content USING btree (category_id, status)"
+      },
+      {
+        "name": "ix_content_featured",
+        "definition": "CREATE INDEX ix_content_featured ON public.content USING btree (featured)"
+      },
+      {
+        "name": "ix_content_published_at",
+        "definition": "CREATE INDEX ix_content_published_at ON public.content USING btree (published_at)"
+      },
+      {
+        "name": "ix_content_status",
+        "definition": "CREATE INDEX ix_content_status ON public.content USING btree (status)"
+      },
+      {
+        "name": "ix_content_author_status",
+        "definition": "CREATE INDEX ix_content_author_status ON public.content USING btree (author_id, status)"
+      },
+      {
+        "name": "ix_content_slug",
+        "definition": "CREATE UNIQUE INDEX ix_content_slug ON public.content USING btree (slug)"
+      },
+      {
+        "name": "ix_content_title",
+        "definition": "CREATE INDEX ix_content_title ON public.content USING btree (title)"
+      },
+      {
+        "name": "ix_content_type",
+        "definition": "CREATE INDEX ix_content_type ON public.content USING btree (type)"
+      },
+      {
+        "name": "ix_content_type_created",
+        "definition": "CREATE INDEX ix_content_type_created ON public.content USING btree (type, created_at)"
+      },
+      {
+        "name": "ix_content_featured_place",
+        "definition": "CREATE INDEX ix_content_featured_place ON public.content USING btree (featured, feature_place)"
+      },
+      {
+        "name": "ix_content_published_type_date",
+        "definition": "CREATE INDEX ix_content_published_type_date ON public.content USING btree (status, type, published_at)"
+      }
+    ]
+  },
+  "leaderboard_entries": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "leaderboard_type",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "category_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "score",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "rank_position",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "additional_metrics",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "period_start",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "period_end",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "last_updated",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_leaderboard_entries",
+        "definition": "CREATE UNIQUE INDEX pk_leaderboard_entries ON public.leaderboard_entries USING btree (id)"
+      },
+      {
+        "name": "idx_leaderboard_entries_rank",
+        "definition": "CREATE INDEX idx_leaderboard_entries_rank ON public.leaderboard_entries USING btree (leaderboard_type, rank_position)"
+      },
+      {
+        "name": "idx_leaderboard_entries_type_period",
+        "definition": "CREATE INDEX idx_leaderboard_entries_type_period ON public.leaderboard_entries USING btree (leaderboard_type, period_start, period_end)"
+      },
+      {
+        "name": "idx_leaderboard_entries_user_type",
+        "definition": "CREATE INDEX idx_leaderboard_entries_user_type ON public.leaderboard_entries USING btree (user_id, leaderboard_type)"
+      },
+      {
+        "name": "idx_leaderboard_entries_category",
+        "definition": "CREATE INDEX idx_leaderboard_entries_category ON public.leaderboard_entries USING btree (category_id)"
+      }
+    ]
+  },
+  "livestreams": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "host_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "category_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "title",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "stream_url",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "thumbnail_url",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "status",
+        "type": "USER-DEFINED",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_live",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "viewer_count",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "tags",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "scheduled_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "started_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "ended_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_livestreams",
+        "definition": "CREATE UNIQUE INDEX pk_livestreams ON public.livestreams USING btree (id)"
+      }
+    ]
+  },
+  "media": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "content_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "uploaded_by",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "media_type",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 50,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "file_url",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "thumbnail_url",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "filename",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "original_filename",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "mime_type",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "title",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "photographer",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "national_park",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "file_size",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "duration",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "width",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "height",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "file_metadata",
+        "type": "json",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_featured",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_media",
+        "definition": "CREATE UNIQUE INDEX pk_media ON public.media USING btree (id)"
+      },
+      {
+        "name": "uq_media_file_url",
+        "definition": "CREATE UNIQUE INDEX uq_media_file_url ON public.media USING btree (file_url)"
+      },
+      {
+        "name": "ix_media_type_created",
+        "definition": "CREATE INDEX ix_media_type_created ON public.media USING btree (media_type, created_at)"
+      },
+      {
+        "name": "ix_media_national_park",
+        "definition": "CREATE INDEX ix_media_national_park ON public.media USING btree (national_park)"
+      },
+      {
+        "name": "ix_media_photographer_park",
+        "definition": "CREATE INDEX ix_media_photographer_park ON public.media USING btree (photographer, national_park)"
+      },
+      {
+        "name": "ix_media_content_type",
+        "definition": "CREATE INDEX ix_media_content_type ON public.media USING btree (content_id, media_type)"
+      },
+      {
+        "name": "ix_media_featured",
+        "definition": "CREATE INDEX ix_media_featured ON public.media USING btree (is_featured)"
+      },
+      {
+        "name": "ix_media_photographer",
+        "definition": "CREATE INDEX ix_media_photographer ON public.media USING btree (photographer)"
+      },
+      {
+        "name": "ix_media_uploader_created",
+        "definition": "CREATE INDEX ix_media_uploader_created ON public.media USING btree (uploaded_by, created_at)"
+      },
+      {
+        "name": "ix_media_media_type",
+        "definition": "CREATE INDEX ix_media_media_type ON public.media USING btree (media_type)"
+      }
+    ]
+  },
+  "myth_fact_collections": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": "gen_random_uuid()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "category_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "name",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_active",
+        "type": "boolean",
+        "nullable": true,
+        "default": "true",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "cards_count",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "repeatability",
+        "type": "character varying",
+        "nullable": true,
+        "default": "'daily'::character varying",
+        "max_length": 20,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "custom_points_enabled",
+        "type": "boolean",
+        "nullable": true,
+        "default": "false",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "custom_points_bronze",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "custom_points_silver",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "custom_points_gold",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "custom_points_platinum",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "custom_credits_enabled",
+        "type": "boolean",
+        "nullable": true,
+        "default": "false",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "custom_credits_bronze",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "custom_credits_silver",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "custom_credits_gold",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "custom_credits_platinum",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_by",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "myth_fact_collections_pkey",
+        "definition": "CREATE UNIQUE INDEX myth_fact_collections_pkey ON public.myth_fact_collections USING btree (id)"
+      },
+      {
+        "name": "idx_collections_category",
+        "definition": "CREATE INDEX idx_collections_category ON public.myth_fact_collections USING btree (category_id)"
+      },
+      {
+        "name": "idx_collections_active",
+        "definition": "CREATE INDEX idx_collections_active ON public.myth_fact_collections USING btree (is_active)"
+      },
+      {
+        "name": "idx_collections_created_at",
+        "definition": "CREATE INDEX idx_collections_created_at ON public.myth_fact_collections USING btree (created_at)"
+      }
+    ]
+  },
+  "myths_facts": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "category_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "title",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "myth_content",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "fact_content",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "image_url",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_featured",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "custom_points",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_myths_facts",
+        "definition": "CREATE UNIQUE INDEX pk_myths_facts ON public.myths_facts USING btree (id)"
+      }
+    ]
+  },
+  "quizzes": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "category_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "title",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "cover_image",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "questions",
+        "type": "json",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "difficulty_level",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "time_limit",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "is_active",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "base_points_reward",
+        "type": "integer",
+        "nullable": false,
+        "default": "10",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "time_bonus_threshold",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "perfect_score_bonus",
+        "type": "integer",
+        "nullable": false,
+        "default": "5",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credits_on_completion",
+        "type": "integer",
+        "nullable": false,
+        "default": "50",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_quizzes",
+        "definition": "CREATE UNIQUE INDEX pk_quizzes ON public.quizzes USING btree (id)"
+      }
+    ]
+  },
+  "rewards_configuration": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "activity_type",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "reward_tier",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "points_reward",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credits_reward",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "minimum_score_percentage",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "time_bonus_threshold",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "daily_cap",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "is_active",
+        "type": "boolean",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_rewards_configuration",
+        "definition": "CREATE UNIQUE INDEX pk_rewards_configuration ON public.rewards_configuration USING btree (id)"
+      },
+      {
+        "name": "uq_rewards_config_activity_tier",
+        "definition": "CREATE UNIQUE INDEX uq_rewards_config_activity_tier ON public.rewards_configuration USING btree (activity_type, reward_tier)"
+      },
+      {
+        "name": "idx_rewards_config_activity",
+        "definition": "CREATE INDEX idx_rewards_config_activity ON public.rewards_configuration USING btree (activity_type, is_active)"
+      }
+    ]
+  },
+  "site_settings": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": "gen_random_uuid()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "key",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "value",
+        "type": "text",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "data_type",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 20,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "category",
+        "type": "character varying",
+        "nullable": false,
+        "default": "'general'::character varying",
+        "max_length": 50,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "label",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 200,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_public",
+        "type": "boolean",
+        "nullable": true,
+        "default": "false",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "site_settings_pkey",
+        "definition": "CREATE UNIQUE INDEX site_settings_pkey ON public.site_settings USING btree (id)"
+      },
+      {
+        "name": "site_settings_key_key",
+        "definition": "CREATE UNIQUE INDEX site_settings_key_key ON public.site_settings USING btree (key)"
+      },
+      {
+        "name": "idx_site_settings_key",
+        "definition": "CREATE INDEX idx_site_settings_key ON public.site_settings USING btree (key)"
+      }
+    ]
+  },
+  "temp_user_registrations": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "email",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "username",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 50,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "hashed_password",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "full_name",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "gender",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 20,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "country",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "email_verification_token",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 10,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "email_verification_expires",
+        "type": "timestamp without time zone",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "verified_at",
+        "type": "timestamp without time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_expired",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_temp_user_registrations",
+        "definition": "CREATE UNIQUE INDEX pk_temp_user_registrations ON public.temp_user_registrations USING btree (id)"
+      },
+      {
+        "name": "ix_temp_user_registrations_username",
+        "definition": "CREATE UNIQUE INDEX ix_temp_user_registrations_username ON public.temp_user_registrations USING btree (username)"
+      },
+      {
+        "name": "ix_temp_user_registrations_email",
+        "definition": "CREATE UNIQUE INDEX ix_temp_user_registrations_email ON public.temp_user_registrations USING btree (email)"
+      }
+    ]
+  },
+  "trending_items": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "item_type",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 50,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "item_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "view_count_24h",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "view_count_7d",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "view_count_30d",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "unique_viewers_24h",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "unique_viewers_7d",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "unique_viewers_30d",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "engagement_score_24h",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "engagement_score_7d",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "engagement_score_30d",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "trending_score",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "velocity_score",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "last_updated",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "trending_since",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_trending_items",
+        "definition": "CREATE UNIQUE INDEX pk_trending_items ON public.trending_items USING btree (id)"
+      }
+    ]
+  },
+  "user_achievements": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "achievement_type",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "achievement_level",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "points_rewarded",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credits_rewarded",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "achievement_metadata",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "unlocked_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_user_achievements",
+        "definition": "CREATE UNIQUE INDEX pk_user_achievements ON public.user_achievements USING btree (id)"
+      },
+      {
+        "name": "idx_user_achievements_user_id",
+        "definition": "CREATE INDEX idx_user_achievements_user_id ON public.user_achievements USING btree (user_id)"
+      },
+      {
+        "name": "idx_user_achievements_type",
+        "definition": "CREATE INDEX idx_user_achievements_type ON public.user_achievements USING btree (achievement_type)"
+      }
+    ]
+  },
+  "user_animal_interactions": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "animal_profile_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_favorite",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "has_viewed",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "view_count",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "first_viewed_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "last_viewed_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "favorited_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_user_animal_interactions",
+        "definition": "CREATE UNIQUE INDEX pk_user_animal_interactions ON public.user_animal_interactions USING btree (id)"
+      }
+    ]
+  },
+  "user_collection_progress": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": "gen_random_uuid()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "collection_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "play_date",
+        "type": "date",
+        "nullable": false,
+        "default": "CURRENT_DATE",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "completed",
+        "type": "boolean",
+        "nullable": true,
+        "default": "false",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "score_percentage",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "time_taken",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "answers_correct",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "total_questions",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "points_earned",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credits_earned",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "tier",
+        "type": "character varying",
+        "nullable": true,
+        "default": "NULL::character varying",
+        "max_length": 20,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "bonus_applied",
+        "type": "boolean",
+        "nullable": true,
+        "default": "false",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "game_session_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "completed_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "user_collection_progress_pkey",
+        "definition": "CREATE UNIQUE INDEX user_collection_progress_pkey ON public.user_collection_progress USING btree (id)"
+      },
+      {
+        "name": "user_collection_progress_user_id_collection_id_play_date_key",
+        "definition": "CREATE UNIQUE INDEX user_collection_progress_user_id_collection_id_play_date_key ON public.user_collection_progress USING btree (user_id, collection_id, play_date)"
+      },
+      {
+        "name": "idx_progress_user",
+        "definition": "CREATE INDEX idx_progress_user ON public.user_collection_progress USING btree (user_id)"
+      },
+      {
+        "name": "idx_progress_collection",
+        "definition": "CREATE INDEX idx_progress_collection ON public.user_collection_progress USING btree (collection_id)"
+      },
+      {
+        "name": "idx_progress_date",
+        "definition": "CREATE INDEX idx_progress_date ON public.user_collection_progress USING btree (play_date)"
+      },
+      {
+        "name": "idx_progress_completed",
+        "definition": "CREATE INDEX idx_progress_completed ON public.user_collection_progress USING btree (completed)"
+      },
+      {
+        "name": "idx_progress_user_date",
+        "definition": "CREATE INDEX idx_progress_user_date ON public.user_collection_progress USING btree (user_id, play_date)"
+      }
+    ]
+  },
+  "user_currency_transactions": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "transaction_type",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "currency_type",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "amount",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "balance_after",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "activity_type",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "activity_reference_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "transaction_metadata",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "processed_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_processed",
+        "type": "boolean",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_user_currency_transactions",
+        "definition": "CREATE UNIQUE INDEX pk_user_currency_transactions ON public.user_currency_transactions USING btree (id)"
+      },
+      {
+        "name": "idx_user_currency_transactions_user_id",
+        "definition": "CREATE INDEX idx_user_currency_transactions_user_id ON public.user_currency_transactions USING btree (user_id)"
+      },
+      {
+        "name": "idx_user_currency_transactions_activity",
+        "definition": "CREATE INDEX idx_user_currency_transactions_activity ON public.user_currency_transactions USING btree (activity_type, activity_reference_id)"
+      },
+      {
+        "name": "idx_user_currency_transactions_created",
+        "definition": "CREATE INDEX idx_user_currency_transactions_created ON public.user_currency_transactions USING btree (created_at)"
+      }
+    ]
+  },
+  "user_daily_activity": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "activity_date",
+        "type": "date",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "quiz_attempts",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "quiz_completions",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "myths_facts_games",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "points_earned_today",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credits_earned_today",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "login_streak",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "last_activity_time",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_user_daily_activity",
+        "definition": "CREATE UNIQUE INDEX pk_user_daily_activity ON public.user_daily_activity USING btree (id)"
+      },
+      {
+        "name": "uq_user_daily_activity",
+        "definition": "CREATE UNIQUE INDEX uq_user_daily_activity ON public.user_daily_activity USING btree (user_id, activity_date)"
+      },
+      {
+        "name": "idx_user_daily_activity_user_date",
+        "definition": "CREATE INDEX idx_user_daily_activity_user_date ON public.user_daily_activity USING btree (user_id, activity_date)"
+      },
+      {
+        "name": "idx_user_daily_activity_date",
+        "definition": "CREATE INDEX idx_user_daily_activity_date ON public.user_daily_activity USING btree (activity_date)"
+      }
+    ]
+  },
+  "user_preferences": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "favorite_categories",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "favorite_animals",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "preferred_content_types",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "avg_session_duration",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "preferred_time_of_day",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "most_active_day",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "total_content_views",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "total_quiz_attempts",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "total_livestream_views",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "wildlife_interest_score",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "conservation_interest_score",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "education_interest_score",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "entertainment_interest_score",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "preference_metadata",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_user_preferences",
+        "definition": "CREATE UNIQUE INDEX pk_user_preferences ON public.user_preferences USING btree (id)"
+      },
+      {
+        "name": "uq_user_preferences_user_id",
+        "definition": "CREATE UNIQUE INDEX uq_user_preferences_user_id ON public.user_preferences USING btree (user_id)"
+      }
+    ]
+  },
+  "user_quiz_best_scores": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": "gen_random_uuid()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "quiz_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "best_score",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "best_percentage",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "best_time",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credits_earned",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "points_earned",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "reward_tier",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 50,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "achieved_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "user_quiz_best_scores_pkey",
+        "definition": "CREATE UNIQUE INDEX user_quiz_best_scores_pkey ON public.user_quiz_best_scores USING btree (id)"
+      },
+      {
+        "name": "unique_user_quiz_best",
+        "definition": "CREATE UNIQUE INDEX unique_user_quiz_best ON public.user_quiz_best_scores USING btree (user_id, quiz_id)"
+      },
+      {
+        "name": "idx_user_quiz_best_user_id",
+        "definition": "CREATE INDEX idx_user_quiz_best_user_id ON public.user_quiz_best_scores USING btree (user_id)"
+      },
+      {
+        "name": "idx_user_quiz_best_quiz_id",
+        "definition": "CREATE INDEX idx_user_quiz_best_quiz_id ON public.user_quiz_best_scores USING btree (quiz_id)"
+      },
+      {
+        "name": "idx_user_quiz_best_percentage",
+        "definition": "CREATE INDEX idx_user_quiz_best_percentage ON public.user_quiz_best_scores USING btree (best_percentage)"
+      },
+      {
+        "name": "idx_user_quiz_best_achieved_at",
+        "definition": "CREATE INDEX idx_user_quiz_best_achieved_at ON public.user_quiz_best_scores USING btree (achieved_at)"
+      }
+    ]
+  },
+  "user_quiz_results": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "quiz_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "score",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "max_score",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "percentage",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "answers",
+        "type": "json",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "time_taken",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "completed_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "points_earned",
+        "type": "integer",
+        "nullable": false,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credits_earned",
+        "type": "integer",
+        "nullable": false,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "reward_tier",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 20,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "time_bonus_applied",
+        "type": "boolean",
+        "nullable": false,
+        "default": "false",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_user_quiz_results",
+        "definition": "CREATE UNIQUE INDEX pk_user_quiz_results ON public.user_quiz_results USING btree (id)"
+      }
+    ]
+  },
+  "user_recommendations": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "recommendation_type",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "item_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "source",
+        "type": "USER-DEFINED",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "relevance_score",
+        "type": "double precision",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "confidence_score",
+        "type": "double precision",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "recommendation_reason",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "recommendation_metadata",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_viewed",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_clicked",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_dismissed",
+        "type": "boolean",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "expires_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "viewed_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "clicked_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "dismissed_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_user_recommendations",
+        "definition": "CREATE UNIQUE INDEX pk_user_recommendations ON public.user_recommendations USING btree (id)"
+      }
+    ]
+  },
+  "users": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "username",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 50,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "email",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "hashed_password",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 255,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "full_name",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "gender",
+        "type": "USER-DEFINED",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "country",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "bio",
+        "type": "text",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "avatar_url",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 500,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_email_verified",
+        "type": "boolean",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "email_verification_token",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "email_verification_expires",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "password_reset_token",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 100,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "password_reset_expires",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_active",
+        "type": "boolean",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "is_superuser",
+        "type": "boolean",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "preferences",
+        "type": "json",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": false,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "last_login",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "points_balance",
+        "type": "integer",
+        "nullable": false,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credits_balance",
+        "type": "integer",
+        "nullable": false,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "total_points_earned",
+        "type": "integer",
+        "nullable": false,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "total_credits_earned",
+        "type": "integer",
+        "nullable": false,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_users",
+        "definition": "CREATE UNIQUE INDEX pk_users ON public.users USING btree (id)"
+      },
+      {
+        "name": "uq_users_username",
+        "definition": "CREATE UNIQUE INDEX uq_users_username ON public.users USING btree (username)"
+      },
+      {
+        "name": "uq_users_email",
+        "definition": "CREATE UNIQUE INDEX uq_users_email ON public.users USING btree (email)"
+      },
+      {
+        "name": "idx_users_points_balance",
+        "definition": "CREATE INDEX idx_users_points_balance ON public.users USING btree (points_balance)"
+      },
+      {
+        "name": "idx_users_credits_balance",
+        "definition": "CREATE INDEX idx_users_credits_balance ON public.users USING btree (credits_balance)"
+      },
+      {
+        "name": "idx_users_total_points",
+        "definition": "CREATE INDEX idx_users_total_points ON public.users USING btree (total_points_earned)"
+      }
+    ]
+  },
+  "viewing_history": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "item_type",
+        "type": "character varying",
+        "nullable": false,
+        "default": null,
+        "max_length": 50,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "item_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "view_duration",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "completion_percentage",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "interaction_score",
+        "type": "double precision",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 53,
+        "scale": null
+      },
+      {
+        "name": "referrer_type",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 50,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "referrer_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "device_type",
+        "type": "character varying",
+        "nullable": true,
+        "default": null,
+        "max_length": 50,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "viewed_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "session_start",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "session_end",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "pk_viewing_history",
+        "definition": "CREATE UNIQUE INDEX pk_viewing_history ON public.viewing_history USING btree (id)"
+      }
+    ]
+  },
+  "weekly_leaderboard_cache": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false,
+        "default": "gen_random_uuid()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "user_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "week_start_date",
+        "type": "date",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "week_end_date",
+        "type": "date",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "week_number",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "year",
+        "type": "integer",
+        "nullable": false,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "total_credits_earned",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "total_points_earned",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "quizzes_completed",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "perfect_scores",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "average_percentage",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "credits_rank",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "points_rank",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "completion_rank",
+        "type": "integer",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "improvement_from_last_week",
+        "type": "integer",
+        "nullable": true,
+        "default": "0",
+        "max_length": null,
+        "precision": 32,
+        "scale": 0
+      },
+      {
+        "name": "is_personal_best_week",
+        "type": "boolean",
+        "nullable": true,
+        "default": "false",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": "now()",
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      },
+      {
+        "name": "last_calculated_at",
+        "type": "timestamp with time zone",
+        "nullable": true,
+        "default": null,
+        "max_length": null,
+        "precision": null,
+        "scale": null
+      }
+    ],
+    "indexes": [
+      {
+        "name": "weekly_leaderboard_cache_pkey",
+        "definition": "CREATE UNIQUE INDEX weekly_leaderboard_cache_pkey ON public.weekly_leaderboard_cache USING btree (id)"
+      },
+      {
+        "name": "idx_weekly_leaderboard_user_week",
+        "definition": "CREATE INDEX idx_weekly_leaderboard_user_week ON public.weekly_leaderboard_cache USING btree (user_id, week_start_date)"
+      },
+      {
+        "name": "idx_weekly_leaderboard_week_credits",
+        "definition": "CREATE INDEX idx_weekly_leaderboard_week_credits ON public.weekly_leaderboard_cache USING btree (week_start_date, total_credits_earned)"
+      },
+      {
+        "name": "idx_weekly_leaderboard_credits_rank",
+        "definition": "CREATE INDEX idx_weekly_leaderboard_credits_rank ON public.weekly_leaderboard_cache USING btree (credits_rank)"
+      },
+      {
+        "name": "idx_weekly_leaderboard_current_week",
+        "definition": "CREATE INDEX idx_weekly_leaderboard_current_week ON public.weekly_leaderboard_cache USING btree (week_start_date, year)"
+      },
+      {
+        "name": "idx_weekly_leaderboard_user_id",
+        "definition": "CREATE INDEX idx_weekly_leaderboard_user_id ON public.weekly_leaderboard_cache USING btree (user_id)"
+      }
+    ]
+  }
+}

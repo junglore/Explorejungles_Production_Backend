@@ -1,0 +1,317 @@
+# Podcast Feature Monitoring Configuration
+# This file defines monitoring, logging, and alerting configuration for podcast features
+
+monitoring:
+  enabled: true
+  
+  # Health check endpoints
+  health_checks:
+    - name: "podcast_api"
+      endpoint: "/health/podcasts"
+      interval: 30s
+      timeout: 10s
+      expected_status: 200
+      
+    - name: "file_storage"
+      endpoint: "/health/storage"
+      interval: 60s
+      timeout: 5s
+      expected_status: 200
+
+  # Metrics collection
+  metrics:
+    # Podcast-specific metrics
+    podcast_uploads_total:
+      type: counter
+      description: "Total number of podcast uploads"
+      labels: ["status", "file_type"]
+      
+    podcast_plays_total:
+      type: counter
+      description: "Total number of podcast plays"
+      labels: ["podcast_id", "user_type"]
+      
+    podcast_upload_duration_seconds:
+      type: histogram
+      description: "Time taken to upload podcasts"
+      buckets: [0.1, 0.5, 1.0, 2.5, 5.0, 10.0, 30.0, 60.0]
+      
+    podcast_file_size_bytes:
+      type: histogram
+      description: "Size of uploaded podcast files"
+      buckets: [1048576, 5242880, 10485760, 52428800, 104857600]  # 1MB to 100MB
+      
+    podcast_storage_usage_bytes:
+      type: gauge
+      description: "Total storage used by podcast files"
+      
+    podcast_api_response_time_seconds:
+      type: histogram
+      description: "API response time for podcast endpoints"
+      labels: ["endpoint", "method", "status"]
+      buckets: [0.01, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0]
+      
+    podcast_errors_total:
+      type: counter
+      description: "Total podcast-related errors"
+      labels: ["error_type", "endpoint"]
+
+logging:
+  # Log levels: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: INFO
+  
+  # Log formatters
+  formatters:
+    standard:
+      format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+      datefmt: "%Y-%m-%d %H:%M:%S"
+      
+    json:
+      format: '{"timestamp": "%(asctime)s", "logger": "%(name)s", "level": "%(levelname)s", "message": "%(message)s", "module": "%(module)s", "function": "%(funcName)s", "line": %(lineno)d}'
+      datefmt: "%Y-%m-%dT%H:%M:%S"
+
+  # Log handlers
+  handlers:
+    console:
+      class: logging.StreamHandler
+      level: INFO
+      formatter: standard
+      stream: ext://sys.stdout
+      
+    file:
+      class: logging.handlers.RotatingFileHandler
+      level: INFO
+      formatter: json
+      filename: /var/log/junglore/podcasts.log
+      maxBytes: 10485760  # 10MB
+      backupCount: 5
+      
+    error_file:
+      class: logging.handlers.RotatingFileHandler
+      level: ERROR
+      formatter: json
+      filename: /var/log/junglore/podcast-errors.log
+      maxBytes: 10485760  # 10MB
+      backupCount: 10
+
+  # Logger configuration
+  loggers:
+    junglore.podcasts:
+      level: INFO
+      handlers: [console, file, error_file]
+      propagate: false
+      
+    junglore.podcasts.upload:
+      level: DEBUG
+      handlers: [file]
+      propagate: true
+      
+    junglore.podcasts.api:
+      level: INFO
+      handlers: [file]
+      propagate: true
+      
+    junglore.podcasts.admin:
+      level: INFO
+      handlers: [file]
+      propagate: true
+
+# Alerting configuration
+alerts:
+  enabled: true
+  
+  # Alert rules
+  rules:
+    # High error rate
+    - name: "podcast_high_error_rate"
+      condition: "rate(podcast_errors_total[5m]) > 0.1"
+      severity: warning
+      description: "Podcast error rate is above 10% over 5 minutes"
+      for: 2m
+      
+    # Upload failures
+    - name: "podcast_upload_failures"
+      condition: "increase(podcast_uploads_total{status='failed'}[10m]) > 5"
+      severity: critical
+      description: "More than 5 podcast upload failures in 10 minutes"
+      for: 1m
+      
+    # Storage space
+    - name: "podcast_storage_high"
+      condition: "podcast_storage_usage_bytes > 85 * 1024 * 1024 * 1024"  # 85GB
+      severity: warning
+      description: "Podcast storage usage is above 85GB"
+      for: 5m
+      
+    # API response time
+    - name: "podcast_api_slow"
+      condition: "histogram_quantile(0.95, rate(podcast_api_response_time_seconds_bucket[5m])) > 2"
+      severity: warning
+      description: "95th percentile API response time is above 2 seconds"
+      for: 3m
+      
+    # Service down
+    - name: "podcast_service_down"
+      condition: "up{job='podcast_api'} == 0"
+      severity: critical
+      description: "Podcast API service is down"
+      for: 30s
+
+  # Notification channels
+  notifications:
+    email:
+      enabled: true
+      smtp_server: "smtp.example.com"
+      smtp_port: 587
+      username: "alerts@junglore.com"
+      password: "${SMTP_PASSWORD}"
+      from: "alerts@junglore.com"
+      to: ["admin@junglore.com", "dev-team@junglore.com"]
+      
+    slack:
+      enabled: false
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      channel: "#alerts"
+      username: "Junglore Alerts"
+
+# Performance monitoring
+performance:
+  # Database query monitoring
+  database:
+    slow_query_threshold: 1.0  # seconds
+    log_slow_queries: true
+    
+  # File operation monitoring
+  file_operations:
+    upload_timeout: 300  # seconds
+    download_timeout: 60  # seconds
+    
+  # Memory usage monitoring
+  memory:
+    max_upload_memory: 134217728  # 128MB
+    gc_threshold: 0.8
+
+# Security monitoring
+security:
+  # File upload security
+  file_validation:
+    strict_mime_checking: true
+    virus_scanning: false  # Enable if antivirus is available
+    
+  # Access monitoring
+  access_logs:
+    log_admin_actions: true
+    log_file_access: true
+    
+  # Rate limiting
+  rate_limits:
+    upload_per_minute: 10
+    api_per_minute: 100
+    admin_per_minute: 1000
+
+# Backup monitoring
+backup:
+  # File backup monitoring
+  files:
+    backup_interval: 24h
+    retention_days: 30
+    verify_backups: true
+    
+  # Database backup monitoring
+  database:
+    backup_interval: 6h
+    retention_days: 7
+    verify_backups: true
+
+# Custom dashboards configuration
+dashboards:
+  podcast_overview:
+    title: "Podcast System Overview"
+    panels:
+      - title: "Upload Rate"
+        type: graph
+        metric: "rate(podcast_uploads_total[5m])"
+        
+      - title: "Storage Usage"
+        type: gauge
+        metric: "podcast_storage_usage_bytes"
+        
+      - title: "API Response Time"
+        type: graph
+        metric: "histogram_quantile(0.95, rate(podcast_api_response_time_seconds_bucket[5m]))"
+        
+      - title: "Error Rate"
+        type: graph
+        metric: "rate(podcast_errors_total[5m])"
+        
+  podcast_performance:
+    title: "Podcast Performance Metrics"
+    panels:
+      - title: "Upload Duration"
+        type: heatmap
+        metric: "podcast_upload_duration_seconds"
+        
+      - title: "File Sizes"
+        type: histogram
+        metric: "podcast_file_size_bytes"
+        
+      - title: "Play Count"
+        type: graph
+        metric: "rate(podcast_plays_total[1h])"
+
+# Log analysis patterns
+log_analysis:
+  patterns:
+    # Error patterns
+    upload_errors:
+      pattern: "ERROR.*podcast.*upload.*failed"
+      severity: error
+      action: "alert"
+      
+    file_corruption:
+      pattern: "ERROR.*audio.*corrupt|invalid"
+      severity: critical
+      action: "alert"
+      
+    storage_errors:
+      pattern: "ERROR.*storage.*full|space"
+      severity: critical
+      action: "alert"
+      
+    # Success patterns
+    successful_uploads:
+      pattern: "INFO.*podcast.*uploaded.*successfully"
+      severity: info
+      action: "count"
+      
+    # Performance patterns
+    slow_operations:
+      pattern: "WARNING.*slow.*operation"
+      severity: warning
+      action: "monitor"
+
+# Maintenance schedules
+maintenance:
+  # Regular cleanup tasks
+  cleanup:
+    temp_files:
+      schedule: "0 2 * * *"  # Daily at 2 AM
+      retention: 24h
+      
+    old_logs:
+      schedule: "0 3 * * 0"  # Weekly on Sunday at 3 AM
+      retention: 30d
+      
+    orphaned_files:
+      schedule: "0 4 * * 0"  # Weekly on Sunday at 4 AM
+      
+  # Health checks
+  health_checks:
+    database_optimization:
+      schedule: "0 1 * * 0"  # Weekly on Sunday at 1 AM
+      
+    storage_analysis:
+      schedule: "0 5 * * *"  # Daily at 5 AM
+      
+    performance_review:
+      schedule: "0 6 * * 1"  # Weekly on Monday at 6 AM
