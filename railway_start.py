@@ -229,12 +229,58 @@ def wait_for_database(max_attempts=30, delay=2):
     
     return False
 
+def validate_environment():
+    """Validate that all required environment variables and tools are available"""
+    print("\n🔍 Validating environment...")
+    
+    # Check DATABASE_URL
+    db_url = os.environ.get('DATABASE_URL', '')
+    if not db_url:
+        print("❌ CRITICAL: DATABASE_URL environment variable is not set!")
+        print("   Please configure DATABASE_URL in Railway dashboard")
+        sys.exit(1)
+    
+    print(f"✅ DATABASE_URL is set: {db_url[:50]}...")
+    
+    # Check if alembic is accessible
+    try:
+        result = subprocess.run(
+            [sys.executable, "-m", "alembic", "--version"],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        if result.returncode == 0:
+            print(f"✅ Alembic is accessible: {result.stdout.strip()}")
+        else:
+            print(f"❌ Alembic check failed: {result.stderr}")
+            sys.exit(1)
+    except Exception as e:
+        print(f"❌ CRITICAL: Cannot access Alembic module: {e}")
+        print("   Make sure 'alembic' is in requirements.txt and installed")
+        sys.exit(1)
+    
+    # Check if asyncpg is accessible (required for PostgreSQL)
+    try:
+        import asyncpg
+        print(f"✅ asyncpg module is available")
+    except ImportError as e:
+        print(f"❌ CRITICAL: asyncpg module not available: {e}")
+        print("   Make sure 'asyncpg' is in requirements.txt")
+        sys.exit(1)
+    
+    print("✅ Environment validation passed!")
+    return True
+
+
 def run_migrations():
     """Run database migrations before starting the app"""
     print("\n🔄 Running database migrations...")
     
     # Wait for database to be ready
-    wait_for_database()
+    db_ready = wait_for_database()
+    if not db_ready:
+        print("⚠️  Database connection timeout - attempting migrations anyway...")
     
     # 1. Run custom migration for type column (one-time)
     # We keep this permissive (continue on error) as it might be a specific legacy script
@@ -257,21 +303,26 @@ def run_migrations():
     
     # 2. Run Alembic Migrations (CRITICAL)
     # If this fails, we MUST exit, otherwise the app runs with no tables.
+    print("\n⚗️  Running Alembic migrations...")
+    print(f"   Working directory: {os.getcwd()}")
+    print(f"   Python executable: {sys.executable}")
+    
     try:
-        print("\n⚗️  Running Alembic migrations...")
-        # CRITICAL CHANGE: Use sys.executable -m alembic to ensure we use the correct environment
+        # CRITICAL: Use sys.executable -m alembic to ensure we use the correct environment
         result = subprocess.run(
             [sys.executable, "-m", "alembic", "upgrade", "head"],
             capture_output=True,
             text=True,
-            check=True
+            check=True,
+            cwd=os.getcwd()  # Ensure we're in the right directory
         )
         print("✅ Alembic migrations completed successfully!")
         if result.stdout:
+            print("--- Migration Output ---")
             print(result.stdout)
             
     except subprocess.CalledProcessError as e:
-        print(f"❌ CRITICAL MIGRATION ERROR: {e}")
+        print(f"\n❌ CRITICAL MIGRATION ERROR (Return code: {e.returncode})")
         if e.stdout:
             print("--- STDOUT ---")
             print(e.stdout)
@@ -279,18 +330,33 @@ def run_migrations():
             print("--- STDERR ---")
             print(e.stderr)
         
-        print("\n🛑 Stopping deployment because database tables could not be created.")
+        print("\n🛑 DEPLOYMENT FAILED: Database tables could not be created.")
+        print("   Check the error above and fix the migration issues.")
+        print("   Common issues:")
+        print("   - DATABASE_URL not set correctly in Railway")
+        print("   - Database not accessible from Railway")
+        print("   - Migration conflicts (run 'alembic current' to check)")
         sys.exit(1)  # Exit with error code to fail the deployment
         
+    except FileNotFoundError as e:
+        print(f"\n❌ CRITICAL: Alembic command not found: {e}")
+        print("   This should not happen after validation. Check installation.")
+        sys.exit(1)
+        
     except Exception as e:
-        print(f"❌ UNEXPECTED ERROR during migrations: {e}")
+        print(f"\n❌ UNEXPECTED ERROR during migrations: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
 
 def main():
     """Main startup function"""
     print("🚀 Starting Junglore Backend on Railway...")
     
-    # Run migrations first
+    # Validate environment first
+    validate_environment()
+    
+    # Run migrations
     run_migrations()
     
     # Debug environment variables
