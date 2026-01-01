@@ -12,6 +12,8 @@ Creates:
 - general_knowledge_videos  
 - national_parks
 - temp_user_registrations
+- quizzes
+- user_quiz_results
 """
 from alembic import op
 import sqlalchemy as sa
@@ -153,7 +155,74 @@ def upgrade() -> None:
         ON temp_user_registrations(username);
     """))
     
-    print("✅ Successfully created 4 missing tables (using IF NOT EXISTS - safe)")
+    # 5. CREATE QUIZZES TABLE
+    conn.execute(text("""
+        CREATE TABLE IF NOT EXISTS quizzes (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
+            title VARCHAR(500) NOT NULL,
+            description TEXT,
+            cover_image VARCHAR(500),
+            questions JSONB NOT NULL,
+            difficulty_level INTEGER DEFAULT 1,
+            time_limit INTEGER,
+            is_active BOOLEAN DEFAULT TRUE,
+            base_points_reward INTEGER DEFAULT 10 NOT NULL,
+            credits_on_completion INTEGER DEFAULT 10 NOT NULL,
+            time_bonus_threshold INTEGER,
+            perfect_score_bonus INTEGER DEFAULT 5 NOT NULL,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+        );
+    """))
+    
+    # Create indexes for quizzes
+    conn.execute(text("""
+        CREATE INDEX IF NOT EXISTS ix_quizzes_category 
+        ON quizzes(category_id);
+    """))
+    conn.execute(text("""
+        CREATE INDEX IF NOT EXISTS ix_quizzes_active 
+        ON quizzes(is_active, created_at);
+    """))
+    conn.execute(text("""
+        CREATE INDEX IF NOT EXISTS ix_quizzes_difficulty 
+        ON quizzes(difficulty_level);
+    """))
+    
+    # 6. CREATE USER_QUIZ_RESULTS TABLE
+    conn.execute(text("""
+        CREATE TABLE IF NOT EXISTS user_quiz_results (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            quiz_id UUID NOT NULL REFERENCES quizzes(id) ON DELETE CASCADE,
+            score INTEGER NOT NULL,
+            max_score INTEGER NOT NULL,
+            percentage INTEGER NOT NULL,
+            answers JSONB NOT NULL,
+            time_taken INTEGER,
+            points_earned INTEGER DEFAULT 0 NOT NULL,
+            credits_earned INTEGER DEFAULT 0 NOT NULL,
+            reward_tier VARCHAR(20),
+            time_bonus_applied BOOLEAN DEFAULT FALSE NOT NULL,
+            completed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+        );
+    """))
+    
+    # Create indexes for user_quiz_results
+    conn.execute(text("""
+        CREATE INDEX IF NOT EXISTS ix_user_quiz_results_user 
+        ON user_quiz_results(user_id, completed_at);
+    """))
+    conn.execute(text("""
+        CREATE INDEX IF NOT EXISTS ix_user_quiz_results_quiz 
+        ON user_quiz_results(quiz_id, completed_at);
+    """))
+    conn.execute(text("""
+        CREATE INDEX IF NOT EXISTS ix_user_quiz_results_user_quiz 
+        ON user_quiz_results(user_id, quiz_id);
+    """))
+    
+    print("✅ Successfully created 6 missing tables (using IF NOT EXISTS - safe)")
 
 
 def downgrade() -> None:
@@ -161,9 +230,11 @@ def downgrade() -> None:
     conn = op.get_bind()
     
     # Drop in reverse order due to foreign keys
+    conn.execute(text("DROP TABLE IF EXISTS user_quiz_results CASCADE;"))
+    conn.execute(text("DROP TABLE IF EXISTS quizzes CASCADE;"))
     conn.execute(text("DROP TABLE IF EXISTS general_knowledge_videos CASCADE;"))
     conn.execute(text("DROP TABLE IF EXISTS video_channels CASCADE;"))
     conn.execute(text("DROP TABLE IF EXISTS national_parks CASCADE;"))
     conn.execute(text("DROP TABLE IF EXISTS temp_user_registrations CASCADE;"))
     
-    print("⚠️  Dropped 4 tables")
+    print("⚠️  Dropped 6 tables")

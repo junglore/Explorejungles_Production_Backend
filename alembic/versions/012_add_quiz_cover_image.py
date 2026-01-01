@@ -25,16 +25,39 @@ def upgrade() -> None:
     conn = op.get_bind()
     inspector = inspect(conn)
     
+    # Check if table exists first
+    tables = inspector.get_table_names()
+    if 'quizzes' not in tables:
+        print("⚠️  Skipping: quizzes table does not exist yet")
+        return
+    
     # Check if column exists
     columns = [col['name'] for col in inspector.get_columns('quizzes')]
     
     if 'cover_image' not in columns:
         # Add cover_image column to quizzes table
         op.add_column('quizzes', sa.Column('cover_image', sa.String(length=500), nullable=True))
+    else:
+        print("⚠️  Skipping: cover_image column already exists")
 
 
 def downgrade() -> None:
     """Remove cover_image column from quizzes table"""
+    from sqlalchemy import inspect
     
-    # Remove cover_image column from quizzes table
-    op.drop_column('quizzes', 'cover_image')
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    
+    # Check if table exists first
+    tables = inspector.get_table_names()
+    if 'quizzes' not in tables:
+        print("⚠️  Skipping: quizzes table does not exist")
+        return
+    
+    # Check if column exists before dropping
+    columns = [col['name'] for col in inspector.get_columns('quizzes')]
+    if 'cover_image' in columns:
+        # Remove cover_image column from quizzes table
+        op.drop_column('quizzes', 'cover_image')
+    else:
+        print("⚠️  Skipping: cover_image column does not exist")
