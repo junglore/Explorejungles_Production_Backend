@@ -70,11 +70,11 @@ def upgrade() -> None:
         op.create_table('user_currency_transactions',
         sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4),
         sa.Column('user_id', postgresql.UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='CASCADE'), nullable=False),
-        sa.Column('transaction_type', sa.Enum('POINTS_EARNED', 'CREDITS_EARNED', 'CREDITS_SPENT', 'POINTS_PENALTY', 'CREDITS_PENALTY', 'ADMIN_ADJUSTMENT', name='transactiontypeenum', create_type=False), nullable=False),
-        sa.Column('currency_type', sa.Enum('POINTS', 'CREDITS', name='currencytypeenum', create_type=False), nullable=False),
+        sa.Column('transaction_type', transaction_type_enum, nullable=False),
+        sa.Column('currency_type', currency_type_enum, nullable=False),
         sa.Column('amount', sa.Integer(), nullable=False),
         sa.Column('balance_after', sa.Integer(), nullable=False),
-        sa.Column('activity_type', sa.Enum('QUIZ_COMPLETION', 'MYTHS_FACTS_GAME', 'DAILY_LOGIN', 'STREAK_BONUS', 'ACHIEVEMENT_UNLOCK', 'ADMIN_GRANT', 'PURCHASE', 'REFUND', name='activitytypeenum', create_type=False), nullable=False),
+        sa.Column('activity_type', activity_type_enum, nullable=False),
         sa.Column('activity_reference_id', postgresql.UUID(as_uuid=True), nullable=True),  # Reference to quiz result, etc.
         sa.Column('transaction_metadata', sa.JSON(), default=dict),
         sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
@@ -89,8 +89,8 @@ def upgrade() -> None:
     if 'rewards_configuration' not in existing_tables:
         op.create_table('rewards_configuration',
         sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4),
-        sa.Column('activity_type', sa.Enum('QUIZ_COMPLETION', 'MYTHS_FACTS_GAME', 'DAILY_LOGIN', 'STREAK_BONUS', 'ACHIEVEMENT_UNLOCK', name='rewardactivitytypeenum', create_type=False), nullable=False),
-        sa.Column('reward_tier', sa.Enum('BRONZE', 'SILVER', 'GOLD', 'PLATINUM', name='rewardtierenum', create_type=False), nullable=False),
+        sa.Column('activity_type', reward_activity_type_enum, nullable=False),
+        sa.Column('reward_tier', reward_tier_enum, nullable=False),
         sa.Column('points_reward', sa.Integer(), default=0, nullable=False),
         sa.Column('credits_reward', sa.Integer(), default=0, nullable=False),
         sa.Column('minimum_score_percentage', sa.Integer(), nullable=True),  # For quiz rewards
@@ -128,7 +128,7 @@ def upgrade() -> None:
         op.create_table('user_achievements',
         sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4),
         sa.Column('user_id', postgresql.UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='CASCADE'), nullable=False),
-        sa.Column('achievement_type', sa.Enum('QUIZ_MASTER', 'MYTH_BUSTER', 'SPEED_DEMON', 'PERFECT_SCORE', 'DAILY_WARRIOR', 'WEEK_STREAK', 'MONTH_STREAK', 'QUIZ_CHAMPION', name='achievementtypeenum', create_type=False), nullable=False),
+        sa.Column('achievement_type', achievement_type_enum, nullable=False),
         sa.Column('achievement_level', sa.Integer(), default=1, nullable=False),  # For progressive achievements
         sa.Column('points_rewarded', sa.Integer(), default=0, nullable=False),
         sa.Column('credits_rewarded', sa.Integer(), default=0, nullable=False),
@@ -143,7 +143,7 @@ def upgrade() -> None:
         op.create_table('leaderboard_entries',
         sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4),
         sa.Column('user_id', postgresql.UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='CASCADE'), nullable=False),
-        sa.Column('leaderboard_type', sa.Enum('GLOBAL_POINTS', 'GLOBAL_QUIZ', 'GLOBAL_MYTHS', 'WEEKLY_POINTS', 'MONTHLY_POINTS', 'CATEGORY_SPECIFIC', name='leaderboardtypeenum', create_type=False), nullable=False),
+        sa.Column('leaderboard_type', leaderboard_type_enum, nullable=False),
         sa.Column('category_id', postgresql.UUID(as_uuid=True), sa.ForeignKey('categories.id', ondelete='CASCADE'), nullable=True),
         sa.Column('score', sa.Integer(), nullable=False),
         sa.Column('rank_position', sa.Integer(), nullable=False),
@@ -162,7 +162,7 @@ def upgrade() -> None:
         op.create_table('anti_gaming_tracking',
         sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4),
         sa.Column('user_id', postgresql.UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='CASCADE'), nullable=False),
-        sa.Column('activity_type', sa.Enum('QUIZ_COMPLETION', 'MYTHS_FACTS_GAME', name='antigamingactivityenum', create_type=False), nullable=False),
+        sa.Column('activity_type', anti_gaming_activity_enum, nullable=False),
         sa.Column('activity_reference_id', postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column('completion_time_seconds', sa.Integer(), nullable=True),
         sa.Column('score_percentage', sa.Integer(), nullable=True),
@@ -184,7 +184,7 @@ def upgrade() -> None:
         if 'credits_earned' not in quiz_columns:
             op.add_column('user_quiz_results', sa.Column('credits_earned', sa.Integer(), default=0, nullable=False))
         if 'reward_tier' not in quiz_columns:
-            op.add_column('user_quiz_results', sa.Column('reward_tier', sa.Enum('BRONZE', 'SILVER', 'GOLD', 'PLATINUM', name='quizrewardtierenum', create_type=False), nullable=True))
+            op.add_column('user_quiz_results', sa.Column('reward_tier', quiz_reward_tier_enum, nullable=True))
         if 'time_bonus_applied' not in quiz_columns:
             op.add_column('user_quiz_results', sa.Column('time_bonus_applied', sa.Boolean(), default=False, nullable=False))
     
