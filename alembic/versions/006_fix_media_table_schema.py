@@ -7,6 +7,7 @@ Create Date: 2025-08-28 19:59:00.000000
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import inspect
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
@@ -17,9 +18,17 @@ depends_on = None
 
 
 def upgrade() -> None:
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    tables = inspector.get_table_names()
+    
+    if 'media' not in tables:
+        print("⚠️  Skipping: media table does not exist yet")
+        return
+    
     # Create media_type enum if it doesn't exist
     media_type_enum = postgresql.ENUM('IMAGE', 'VIDEO', 'AUDIO', 'PODCAST', 'DOCUMENT', name='mediatypeenum')
-    media_type_enum.create(op.get_bind(), checkfirst=True)
+    media_type_enum.create(conn, checkfirst=True)
     
     # Update existing NULL media_type values to 'IMAGE' as default
     op.execute("UPDATE media SET media_type = 'IMAGE' WHERE media_type IS NULL")
@@ -42,6 +51,13 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    tables = inspector.get_table_names()
+    
+    if 'media' not in tables:
+        return
+    
     # Remove the index
     try:
         op.drop_index('ix_media_type', table_name='media')

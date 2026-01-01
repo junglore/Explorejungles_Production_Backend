@@ -18,21 +18,39 @@ depends_on = None
 
 def upgrade():
     """Add slug column to categories table"""
+    from sqlalchemy import inspect
     
-    # Add slug column
-    op.add_column('categories', sa.Column('slug', sa.String(length=255), nullable=True))
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    tables = inspector.get_table_names()
+    
+    if 'categories' not in tables:
+        print("⚠️  Skipping: categories table does not exist yet")
+        return
+    
+    columns = [col['name'] for col in inspector.get_columns('categories')]
+    
+    # Add slug column if it doesn't exist
+    if 'slug' not in columns:
+        op.add_column('categories', sa.Column('slug', sa.String(length=255), nullable=True))
     
     # Create unique constraint on slug
     op.create_unique_constraint('uq_categories_slug', 'categories', ['slug'])
     
     # Create index on slug
-    op.create_index('ix_categories_slug', 'categories', ['slug'])
+    indexes = [idx['name'] for idx in inspector.get_indexes('categories')]
+    if 'ix_categories_slug' not in indexes:
+        op.create_index('ix_categories_slug', 'categories', ['slug'])
     
     # Add other missing columns from the model
-    op.add_column('categories', sa.Column('image_url', sa.String(length=500), nullable=True))
-    op.add_column('categories', sa.Column('viewer_count', sa.Integer(), nullable=False, server_default='0'))
-    op.add_column('categories', sa.Column('is_active', sa.Boolean(), nullable=False, server_default='true'))
-    op.add_column('categories', sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()))
+    if 'image_url' not in columns:
+        op.add_column('categories', sa.Column('image_url', sa.String(length=500), nullable=True))
+    if 'viewer_count' not in columns:
+        op.add_column('categories', sa.Column('viewer_count', sa.Integer(), nullable=False, server_default='0'))
+    if 'is_active' not in columns:
+        op.add_column('categories', sa.Column('is_active', sa.Boolean(), nullable=False, server_default='true'))
+    if 'updated_at' not in columns:
+        op.add_column('categories', sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()))
     
     # Create indexes
     op.create_index('ix_categories_is_active', 'categories', ['is_active'])

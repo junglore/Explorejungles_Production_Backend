@@ -23,6 +23,12 @@ def upgrade() -> None:
     
     conn = op.get_bind()
     inspector = inspect(conn)
+    tables = inspector.get_table_names()
+    
+    # Check if users table exists before trying to modify it
+    if 'users' not in tables:
+        print("⚠️  Skipping: users table does not exist yet")
+        return
     
     # Get existing columns in users table
     existing_columns = [col['name'] for col in inspector.get_columns('users')]

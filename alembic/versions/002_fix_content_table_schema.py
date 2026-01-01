@@ -19,15 +19,29 @@ depends_on = None
 
 def upgrade():
     """Fix content table schema to match the Content model"""
+    from sqlalchemy import inspect
     
-    # Add missing author_id column
-    op.add_column('content', sa.Column('author_id', postgresql.UUID(as_uuid=True), nullable=True))
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    tables = inspector.get_table_names()
     
-    # Rename content_type to type
-    op.alter_column('content', 'content_type', new_column_name='type')
+    if 'content' not in tables:
+        print("⚠️  Skipping: content table does not exist yet")
+        return
     
-    # Rename body to content
-    op.alter_column('content', 'body', new_column_name='content')
+    columns = [col['name'] for col in inspector.get_columns('content')]
+    
+    # Add missing author_id column if it doesn't exist
+    if 'author_id' not in columns:
+        op.add_column('content', sa.Column('author_id', postgresql.UUID(as_uuid=True), nullable=True))
+    
+    # Rename content_type to type if content_type exists and type doesn't
+    if 'content_type' in columns and 'type' not in columns:
+        op.alter_column('content', 'content_type', new_column_name='type')
+    
+    # Rename body to content if body exists and content doesn't
+    if 'body' in columns and 'content' not in columns:
+        op.alter_column('content', 'body', new_column_name='content')
     
     # Add missing columns
     op.add_column('content', sa.Column('featured_image', sa.String(length=500), nullable=True))

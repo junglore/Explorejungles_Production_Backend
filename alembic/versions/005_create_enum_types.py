@@ -7,6 +7,7 @@ Create Date: 2025-01-28 15:00:00.000000
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import inspect
 from sqlalchemy.dialects import postgresql
 
 
@@ -19,6 +20,13 @@ depends_on = None
 
 def upgrade():
     """Create enum types and update content table columns"""
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    tables = inspector.get_table_names()
+    
+    if 'content' not in tables:
+        print("⚠️  Skipping: content table does not exist yet")
+        return
     
     # Create enum types
     content_type_enum = postgresql.ENUM(
@@ -51,6 +59,12 @@ def upgrade():
 
 def downgrade():
     """Revert enum types back to varchar"""
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    tables = inspector.get_table_names()
+    
+    if 'content' not in tables:
+        return
     
     # Revert columns back to varchar
     op.alter_column('content', 'type',

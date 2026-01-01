@@ -22,6 +22,12 @@ def upgrade() -> None:
     # Check if is_featured column already exists
     conn = op.get_bind()
     inspector = sa.inspect(conn)
+    tables = inspector.get_table_names()
+    
+    if 'media' not in tables:
+        print("⚠️  Skipping: media table does not exist yet")
+        return
+    
     columns = [col['name'] for col in inspector.get_columns('media')]
     
     if 'is_featured' not in columns:

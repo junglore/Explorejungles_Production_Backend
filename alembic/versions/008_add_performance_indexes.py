@@ -20,23 +20,69 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Add performance indexes"""
+    from sqlalchemy import inspect
+    
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    tables = inspector.get_table_names()
     
     # Content table indexes for better query performance
-    op.create_index('idx_content_status_published', 'content', ['status', 'published_at'])
-    op.create_index('idx_content_category_status', 'content', ['category_id', 'status'])
-    op.create_index('idx_content_author_created', 'content', ['author_id', 'created_at'])
-    op.create_index('idx_content_featured_status', 'content', ['featured', 'status'])
-    op.create_index('idx_content_type_status', 'content', ['type', 'status'])
-    op.create_index('idx_content_slug_unique', 'content', ['slug'], unique=True)
-    op.create_index('idx_content_view_count', 'content', ['view_count'])
+    if 'content' in tables:
+        try:
+            op.create_index('idx_content_status_published', 'content', ['status', 'published_at'])
+        except Exception:
+            pass  # Index might already exist
+        try:
+            op.create_index('idx_content_category_status', 'content', ['category_id', 'status'])
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_content_author_created', 'content', ['author_id', 'created_at'])
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_content_featured_status', 'content', ['featured', 'status'])
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_content_type_status', 'content', ['type', 'status'])
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_content_slug_unique', 'content', ['slug'], unique=True)
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_content_view_count', 'content', ['view_count'])
+        except Exception:
+            pass
     
     # Media table indexes for better performance
-    op.create_index('idx_media_type_created', 'media', ['media_type', 'created_at'])
-    op.create_index('idx_media_content_type', 'media', ['content_id', 'media_type'])
-    op.create_index('idx_media_uploader_created', 'media', ['uploaded_by', 'created_at'])
-    op.create_index('idx_media_photographer_park', 'media', ['photographer', 'national_park'])
-    op.create_index('idx_media_featured', 'media', ['is_featured'])
-    op.create_index('idx_media_file_size', 'media', ['file_size'])
+    if 'media' in tables:
+        try:
+            op.create_index('idx_media_type_created', 'media', ['media_type', 'created_at'])
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_media_content_type', 'media', ['content_id', 'media_type'])
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_media_uploader_created', 'media', ['uploaded_by', 'created_at'])
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_media_photographer_park', 'media', ['photographer', 'national_park'])
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_media_featured', 'media', ['is_featured'])
+        except Exception:
+            pass
+        try:
+            op.create_index('idx_media_file_size', 'media', ['file_size'])
+        except Exception:
+            pass
     
     # Categories table indexes
     op.create_index('idx_categories_slug_unique', 'categories', ['slug'], unique=True)

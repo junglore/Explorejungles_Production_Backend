@@ -7,6 +7,7 @@ Create Date: 2025-01-28 14:00:00.000000
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import inspect
 
 
 # revision identifiers, used by Alembic.
@@ -18,6 +19,13 @@ depends_on = None
 
 def upgrade():
     """Make category slug column required"""
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    tables = inspector.get_table_names()
+    
+    if 'categories' not in tables:
+        print("⚠️  Skipping: categories table does not exist yet")
+        return
     
     # Make slug column NOT NULL
     op.alter_column('categories', 'slug', nullable=False)
@@ -25,6 +33,12 @@ def upgrade():
 
 def downgrade():
     """Make category slug column optional"""
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    tables = inspector.get_table_names()
+    
+    if 'categories' not in tables:
+        return
     
     # Make slug column nullable
     op.alter_column('categories', 'slug', nullable=True)

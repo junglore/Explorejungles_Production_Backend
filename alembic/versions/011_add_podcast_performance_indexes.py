@@ -22,6 +22,11 @@ def upgrade():
     
     conn = op.get_bind()
     inspector = inspect(conn)
+    tables = inspector.get_table_names()
+    
+    if 'media' not in tables:
+        print("⚠️  Skipping: media table does not exist yet")
+        return
     
     # Get existing indexes on media table
     existing_indexes = [idx['name'] for idx in inspector.get_indexes('media')]
