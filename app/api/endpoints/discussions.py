@@ -361,7 +361,8 @@ async def create_discussion(
     Requires authentication. Auto-approved for admins, pending for regular users.
     """
     # Auto-approve for admins
-    auto_approve = current_user.is_superuser if hasattr(current_user, 'is_admin') else False
+    # auto_approve = current_user.is_superuser if hasattr(current_user, 'is_admin') else False
+    auto_approve = current_user.is_superuser if hasattr(current_user, 'is_superuser') else False
     
     discussion = await DiscussionService.create_discussion(
         db, discussion_data, current_user.id, auto_approve=auto_approve
@@ -487,7 +488,9 @@ async def delete_discussion(
     
     Only author or admin can delete
     """
-    is_admin = current_user.is_superuser if hasattr(current_user, 'is_admin') else False
+    # is_admin = current_user.is_superuser if hasattr(current_user, 'is_admin') else False
+
+    is_admin = current_user.is_superuser if hasattr(current_user, 'is_superuser') else False
     
     deleted = await DiscussionService.delete_discussion(
         db, discussion_id, current_user.id, is_admin=is_admin
@@ -794,7 +797,9 @@ async def delete_comment(
     
     Only author or admin can delete
     """
-    is_admin = current_user.is_superuser if hasattr(current_user, 'is_admin') else False
+    # is_admin = current_user.is_superuser if hasattr(current_user, 'is_admin') else False
+
+    is_admin = current_user.is_superuser if hasattr(current_user, 'is_superuser') else False
     
     deleted = await CommentService.delete_comment(
         db, comment_id, current_user.id, is_admin=is_admin
