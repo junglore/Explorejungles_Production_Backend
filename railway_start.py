@@ -399,20 +399,37 @@ def main():
         print(f"👑 Admin panel at: http://{host}:{port}/admin")
         
         # Use subprocess to call uvicorn CLI for better control
+        # Run Uvicorn in a loop to auto-restart after max requests limit
         print("\n🚀 Starting Uvicorn server with production optimizations...")
-        result = subprocess.run([
-            sys.executable, "-m", "uvicorn",
-            "app.main:app",
-            "--host", host,
-            "--port", str(port),
-            "--log-level", "info",
-            "--access-log",
-            "--timeout-keep-alive", "65",
-            "--limit-max-requests", "5000"
-        ], check=False)
         
-        # Exit with same code as uvicorn
-        sys.exit(result.returncode)
+        restart_count = 0
+        while True:
+            restart_count += 1
+            print(f"\n{'='*60}")
+            print(f"🔄 Starting Uvicorn worker #{restart_count}")
+            print(f"{'='*60}\n")
+            
+            result = subprocess.run([
+                sys.executable, "-m", "uvicorn",
+                "app.main:app",
+                "--host", host,
+                "--port", str(port),
+                "--log-level", "info",
+                "--access-log",
+                "--timeout-keep-alive", "65",
+                "--limit-max-requests", "5000"  # Restart after 5000 requests for memory management
+            ], check=False)
+            
+            # If uvicorn exits with non-zero code, something went wrong - exit
+            if result.returncode != 0:
+                print(f"\n❌ Uvicorn exited with error code {result.returncode}")
+                sys.exit(result.returncode)
+            
+            # Exit code 0 means normal shutdown (max requests reached)
+            # Continue the loop to restart automatically
+            print(f"\n✅ Uvicorn worker #{restart_count} completed gracefully")
+            print("🔄 Auto-restarting in 2 seconds...")
+            time.sleep(2)
         
     except Exception as e:
         print(f"❌ Failed to start server: {e}")
